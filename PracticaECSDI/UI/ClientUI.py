@@ -10,7 +10,7 @@ def main():
     option = -1
     while option != 0:
         print "0. Salir"
-        print "1. Buscar productos"
+        print "1. Buscar viaje"
         print "2. Ir a la cesta de la compra"
         print "3. Devolver un producto"
         print "4. Consultar compras"
