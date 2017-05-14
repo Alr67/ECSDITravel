@@ -11,9 +11,10 @@ Created on 08/02/2014
 __author__ = 'javier'
 
 import requests
-from AgentUtil.OntoNamespaces import ACL
 from rdflib import Graph
 from rdflib.namespace import RDF
+
+from PracticaECSDI.AgentUtil.OntoNamespaces import ACL
 
 
 def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt= 0):
