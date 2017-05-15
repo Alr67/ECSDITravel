@@ -80,5 +80,4 @@ def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
 
 
 if __name__ == '__main__':
-    import sys
-##MIRAR COM HA DE SER
+    app.run(port=9532, debug=True)
