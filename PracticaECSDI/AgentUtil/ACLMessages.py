@@ -16,6 +16,18 @@ from rdflib.namespace import RDF
 
 from PracticaECSDI.AgentUtil.OntoNamespaces import ACL
 
+def get_message_ontology(gmess):
+    for a, b, c in gmess.triples((None, ACL.ontology, None)):
+        return str(c)
+
+
+def get_message_performative(gmess):
+    for a, b, c in gmess.triples((None, ACL.performative, None)):
+        return str(c)
+
+def get_message_predicate(gmess, predicate):
+    for a, b, c in gmess.triples((None, predicate, None)):
+        return c
 
 def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt= 0):
     """
