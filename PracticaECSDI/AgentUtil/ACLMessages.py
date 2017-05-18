@@ -14,7 +14,7 @@ import requests
 from rdflib import Graph, Literal
 from rdflib.namespace import RDF
 
-from PracticaECSDI.AgentUtil.OntoNamespaces import ACL
+from AgentUtil.OntoNamespaces import ACL
 
 def get_message_ontology(gmess):
     for a, b, c in gmess.triples((None, ACL.ontology, None)):

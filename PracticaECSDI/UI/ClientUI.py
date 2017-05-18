@@ -1,8 +1,10 @@
 import sys
 import requests
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages.FlightMessage import FlightMessage
+from datetime import date
+from Constants import Ontologies, FIPAACLPerformatives, Constants
+from AgentUtil.ACLMessages import build_message
+from Messages.FlightMessage import FlightMessage
+from Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
 
 LocalhostUrl = "http://127.0.0.1:"
 
@@ -31,17 +33,14 @@ def configUrls():
 
 def askActivitiesData():
     print 'Tell me about your activities'
-    maxPrice = askForString("Max price: ")
+    maxPrice = askForInt("Max price: ")
     print 'Max price to request: ', maxPrice
     activities_url = LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
     print 'url: ', activities_url
-    messageData = FlightMessage(1, maxPrice)
-    print 'data normal:'
-    print messageData
-    print 'data graph:'
+    initDate = date(2011,11,17)
+    finDate = date(2011,11,24)
+    messageData = ActivitiesRequestMessage(1, initDate,finDate,maxPrice)
     gra = messageData.to_graph()
-    print gra
-    print 'finish data'
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.ACTIVITIES_REQUEST).serialize(format='xml')
 
     resp = requests.post(activities_url, data=dataContent)
@@ -122,6 +121,15 @@ def askForString(message):
         print "No puede contener espacios"
         response = raw_input(message)
         return response
+
+def askForInt(message):
+    while True:
+        try:
+            response = eval(raw_input(message))
+            return response
+        except:
+            pass
+            print("Not an integer value...")
 
 
 if __name__ == "__main__":

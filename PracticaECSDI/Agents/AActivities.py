@@ -1,7 +1,9 @@
 from flask import Flask, request, Response
 from rdflib import Graph
-from PracticaECSDI.AgentUtil import ACLMessages
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
+from AgentUtil import  ACLMessages
+from Constants import  Ontologies, FIPAACLPerformatives, Constants
+from Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
+
 
 app = Flask(__name__)
 service = None
@@ -22,6 +24,11 @@ def comm():
 
 def getActivities(graph):
     print 'im in get activities from graph'
+    data = ActivitiesRequestMessage.from_graph(graph)
+    print 'data obtained: ',data
+    print  'initDate: ',data.firstDay
+    print  'lastDay: ',data.lastDay
+    print  'maxPrice: ',data.maxPrice
     return "Activities response"
 
     return result
