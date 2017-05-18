@@ -4,8 +4,7 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.FlightMessage import FlightMessage
 
-AFlightUrl = "http://127.0.0.1:"
-
+LocalhostUrl = "http://127.0.0.1:"
 
 def configUrls():
     configOption = -1
@@ -30,23 +29,58 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
-
-def askFlightsData():
+def askActivitiesData():
+    print 'Tell me about your activities'
     maxPrice = askForString("Max price: ")
     print 'Max price to request: ', maxPrice
-    flightsAgent = AFlightUrl + str(Constants.PORT_AFlights) + "/comm"
+    activities_url = LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
+    print 'url: ', activities_url
     messageData = FlightMessage(1, maxPrice)
-    dataContent = build_message(messageData.to_graph(), FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST)
+    print 'data normal:'
+    print messageData
+    print 'data graph:'
+    gra = messageData.to_graph()
+    print gra
+    print 'finish data'
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.ACTIVITIES_REQUEST).serialize(format='xml')
 
-    resp = requests.post(flightsAgent, data=dataContent).serialize(format('xml'))
+    resp = requests.post(activities_url, data=dataContent)
+    print 'he tornat a la consola clientUI'
     print resp
 
 
-def askHotelData():
     return
 
+def askFlightsData():
+    print 'Tell me about your flights'
+    maxPrice = askForString("Max price: ")
+    print 'Max price to request: ', maxPrice
+    flightsAgent = LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
+    print 'url: ', flightsAgent
+    messageData = FlightMessage(1, maxPrice)
+    print 'data normal:'
+    print messageData
+    print 'data graph:'
+    gra = messageData.to_graph()
+    print gra
+    print 'finish data'
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format='xml')
+
+    resp = requests.post(flightsAgent, data=dataContent)
+    print 'he tornat a la consola clientUI'
+    print resp
+
+def askHotelData():
+    print 'Tell me about your hotels'
+    return
 
 def main():
+    #askFlightsData()
+    askActivitiesData()
+    #askHotelData()
+
+
+def main1():
     username = askForString("Nombre del usuario que usara el sistema: ")
 
     option = -1

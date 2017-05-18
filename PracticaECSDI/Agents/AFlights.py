@@ -10,18 +10,21 @@ service = None
 
 @app.route('/comm', methods=['GET', 'POST'])
 def comm():
+    print 'Im in Flights Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.FLIGHT_REQUEST:
+        print 'Its a flight request'
         flights = getFlies(graph)
         return flights.serialize()
     else:
+        print 'I dont understand'
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
 
 
 
 def getFlights(graph):
-
+    print 'im in get flies from graph'
     return "FLights response"
 
 def getFlies(maxprice, initDate, finalDate, fromCity, toCity):

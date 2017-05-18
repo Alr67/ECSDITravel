@@ -1,2 +1,3 @@
 PORT_AFlights = 9532
-ONTOLOGY_NAME = "http://www.owl-ontologies.com/ecsdi_viajes.owl"
+PORT_AActivities = 9533
+ONTOLOGY_NAME = 'http://www.owl-ontologies.com/ecsdi_viajes.owl'
