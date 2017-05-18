@@ -1,9 +1,10 @@
 from flask import Flask, request, Response
 from rdflib import Graph
+import datetime
 from PracticaECSDI.AgentUtil import ACLMessages
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
-from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage
+from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage,DayPlan
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 
 app = Flask(__name__)
@@ -33,8 +34,13 @@ def getActivities(graph):
     print  'maxPrice: ',data.maxPrice
     days = (data.lastDay-data.firstDay).days
     print 'days: ',days
-    responseObj = ActivitiesResponseMessage(1,days)
-    #Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
+    planList = []
+    for i in range(days):
+        dayPlan = DayPlan(i,data.firstDay+ datetime.timedelta(days=i),"Pending","Pending","Pending")
+        planList.append(dayPlan)
+    print 'plan length: ',len(planList)
+    responseObj = ActivitiesResponseMessage(1,planList)
+    #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
     return dataContent
 

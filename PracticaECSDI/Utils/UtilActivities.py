@@ -34,10 +34,18 @@ def processActivitiesResult(response):
     #print "Register response was {}".format(dat)
     rPerformative = get_message_performative(Graph().parse(data=dat))
     if rPerformative == FIPAACLPerformatives.AGREE:
-    #cal agafar la ontologia de la resposta?
+    #TO-ASK: cal agafar la ontologia de la resposta?
         print "Success request"
         graph = Graph().parse(data=dat, format='xml')
         actResult = ActivitiesResponseMessage.from_graph(graph)
-        print "dies: ",actResult.day_activities
+
+        print "dies: ", len(actResult.day_plans)
+        for day in actResult.day_plans:
+            print "dia ",day.uuid
+            print "Data: ",day.date
+            print "Activitat1: ",day.activity1
+            print "Activitat2: ",day.activity2
+            print "Activitat3: ",day.activity3
+
     else:
         print "Activities error"
