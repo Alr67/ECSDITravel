@@ -3,6 +3,8 @@ from rdflib import Graph
 from PracticaECSDI.AgentUtil import ACLMessages
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
+from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage
+from PracticaECSDI.AgentUtil.ACLMessages import build_message
 
 app = Flask(__name__)
 service = None
@@ -12,10 +14,11 @@ def comm():
     print 'Im in Activities Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
-    if ontology == Ontologies.ACTIVITIES_REQUEST:
+    if ontology == Ontologies.SEND_ACTIVITIES_REQUEST:
         print 'Its a activity request'
-        act = getActivities(graph)
-        return act.serialize()
+        message = getActivities(graph)
+        print 'activities graph obtained, lets construct response message'
+        return message
     else:
         print 'I dont understand'
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
@@ -28,9 +31,13 @@ def getActivities(graph):
     print  'initDate: ',data.firstDay
     print  'lastDay: ',data.lastDay
     print  'maxPrice: ',data.maxPrice
-    return "Activities response"
+    days = (data.lastDay-data.firstDay).days
+    print 'days: ',days
+    responseObj = ActivitiesResponseMessage(1,days)
+    #Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
+    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
+    return dataContent
 
-    return result
 
 if __name__ == '__main__':
     app.run(port=Constants.PORT_AActivities, debug=True)

@@ -1,13 +1,10 @@
 import sys
-from datetime import date
 import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.FlightMessage import FlightMessage
-from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
-
-
-LocalhostUrl = "http://127.0.0.1:"
+from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString
+from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
 
 def configUrls():
     configOption = -1
@@ -32,30 +29,11 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
-def askActivitiesData():
-    print 'Tell me about your activities'
-    maxPrice = askForInt("Max price: ")
-    print 'Max price to request: ', maxPrice
-    activities_url = LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
-    print 'url: ', activities_url
-    initDate = date(2011,11,17)
-    finDate = date(2011,11,24)
-    messageData = ActivitiesRequestMessage(1, initDate,finDate,maxPrice)
-    gra = messageData.to_graph()
-    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.ACTIVITIES_REQUEST).serialize(format='xml')
-
-    resp = requests.post(activities_url, data=dataContent)
-    print 'he tornat a la consola clientUI'
-    print resp
-
-
-    return
-
 def askFlightsData():
     print 'Tell me about your flights'
     maxPrice = askForString("Max price: ")
     print 'Max price to request: ', maxPrice
-    flightsAgent = LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
+    flightsAgent = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
     print 'url: ', flightsAgent
     messageData = FlightMessage(1, maxPrice)
     print 'data normal:'
@@ -116,21 +94,6 @@ def main1():
         print
 
 
-def askForString(message):
-    response = raw_input(message)
-    while response.strip().find(" ") != -1:
-        print "No puede contener espacios"
-        response = raw_input(message)
-        return response
-
-def askForInt(message):
-    while True:
-        try:
-            response = eval(raw_input(message))
-            return response
-        except:
-            pass
-            print("Not an integer value...")
 
 
 if __name__ == "__main__":

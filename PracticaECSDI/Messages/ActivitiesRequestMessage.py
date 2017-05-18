@@ -1,6 +1,6 @@
 from rdflib import Graph, Literal
 from rdflib.namespace import Namespace, FOAF
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
+from PracticaECSDI.Constants import Constants
 
 class ActivitiesRequestMessage:
     def __init__(self,id,initDate,finalDate, maxPrice):
@@ -21,7 +21,7 @@ class ActivitiesRequestMessage:
 
     @classmethod
     def from_graph(cls,graph):
-        query = """SELECT ?x ?uuid ?maxprice ?firstDay ?lastDay
+        query = """SELECT ?x ?uuid ?maxPrice ?firstDay ?lastDay
             WHERE {
                 ?x ns1:Uuid ?uuid.
                 ?x ns1:MaxPrice ?maxPrice.
