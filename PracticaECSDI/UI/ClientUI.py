@@ -3,7 +3,9 @@ import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.FlightMessage import FlightMessage
+
 AFlightUrl = "http://127.0.0.1:"
+
 
 def configUrls():
     configOption = -1
@@ -14,34 +16,37 @@ def configUrls():
         print
         try:
             configOption = int(configOption)
-            if configOption not in [0,1]:
+            if configOption not in [0, 1]:
                 print ("Opcion incorrecta")
             else:
                 if configOption == 0:
                     break
                 if configOption == 1:
                     AFlightUrl = askForString("Url/ip del agente de vuelos: ")
-                    print "Url/ip del agente de vuelos que usara el sistema: "+AFlightUrl
+                    print "Url/ip del agente de vuelos que usara el sistema: " + AFlightUrl
                     print
                     return
         except ValueError:
             print "El valor ha de ser numerico"
         print
 
+
 def askFlightsData():
     maxPrice = askForString("Max price: ")
     print 'Max price to request: ', maxPrice
     flightsAgent = AFlightUrl + str(Constants.PORT_AFlights) + "/comm"
     messageData = FlightMessage(1, maxPrice)
-    resp = requests.post(flightsAgent,data= build_message(messageData.to_graph(),FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
+    dataContent = build_message(messageData.to_graph(), FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST)
+
+    resp = requests.post(flightsAgent, data=dataContent).serialize(format('xml'))
     print resp
+
 
 def askHotelData():
     return
 
 
 def main():
-
     username = askForString("Nombre del usuario que usara el sistema: ")
 
     option = -1
@@ -86,10 +91,10 @@ def askForString(message):
 
 
 if __name__ == "__main__":
-    #if len(sys.argv) != 3:
-        #print "USAGE: python UserInteface {AUSER_URI} {APURCHASES_URI}"
-        #exit(-1)
-    #auser = sys.argv[1]
-    #apurchases = sys.argv[2]
-    #cart = {}
+    # if len(sys.argv) != 3:
+    # print "USAGE: python UserInteface {AUSER_URI} {APURCHASES_URI}"
+    # exit(-1)
+    # auser = sys.argv[1]
+    # apurchases = sys.argv[2]
+    # cart = {}
     main()
