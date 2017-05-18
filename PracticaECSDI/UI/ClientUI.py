@@ -31,9 +31,9 @@ def configUrls():
 def askFlightsData():
     maxPrice = askForString("Max price: ")
     #print "Max price to request: "+ maxPrice
-    flightsAgent= AFlightUrl+Constants.PORT_AFlights + "/comm"
-    messageData = ConsoleMessage(1,maxPrice)
-    resp = requests.post(flightsAgent,data= build_message(messageData.to_graph(),FIPAACLPerformatives.QUERY_IF, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
+    flightsAgent = AFlightUrl + Constants.PORT_AFlights + "/comm"
+    messageData = ConsoleMessage(1, maxPrice)
+    resp = requests.post(flightsAgent,data = build_message(messageData.to_graph(),FIPAACLPerformatives.QUERY_IF, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
     return
 
 def askHotelData():
