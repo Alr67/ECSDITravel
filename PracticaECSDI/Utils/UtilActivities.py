@@ -2,7 +2,7 @@ from datetime import date
 from rdflib import Graph
 from flask import Flask, request, Response
 import requests
-from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString
+from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString,askForDate
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
 from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage
@@ -16,8 +16,8 @@ def askActivitiesData():
     print 'Max price to request: ', maxPrice
     activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
     print 'url: ', activities_url
-    initDate = date(2011,11,17)
-    finDate = date(2011,11,24)
+    initDate = askForDate("Enter the first day of the travel")
+    finDate = askForDate("Enter the last day of the travel")
     messageData = ActivitiesRequestMessage(1, initDate,finDate,maxPrice)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
