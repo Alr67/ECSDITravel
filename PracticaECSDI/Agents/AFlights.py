@@ -2,7 +2,7 @@ from flask import Flask, request, Response
 from skyscanner.skyscanner import Flights
 from rdflib import Graph
 from PracticaECSDI.AgentUtil import ACLMessages
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives
+from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
 app = Flask(__name__)
 service = None
@@ -78,6 +78,5 @@ def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
 
     return result
 
-
 if __name__ == '__main__':
-    app.run(port=9532, debug=True)
+    app.run(port=Constants.PORT_AFlights, debug=True)

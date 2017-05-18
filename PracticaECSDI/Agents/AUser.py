@@ -1,6 +1,5 @@
 import sys
-AFlightUrl = "someUrl"
-
+AFlightUrl = ""
 
 def configUrls():
     configOption = -1
@@ -17,12 +16,7 @@ def configUrls():
                 if configOption == 0:
                     break
                 if configOption == 1:
-
-                    url = raw_input("Url/ip del agente de vuelos: ")
-                    while url.strip().find(" ") != -1:
-                        print "No puede contener espacios"
-                        url = raw_input("Url/ip del agente de vuelos: ")
-                    AFlightUrl = url
+                    AFlightUrl = askForString("Url/ip del agente de vuelos: ")
                     print "Url/ip del agente de vuelos que usara el sistema: "+AFlightUrl
                     print
                     return
@@ -30,36 +24,55 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
+def askFlightsData():
+    maxPrice = askForString("Max price: ")
+    print "Max price to request: "+maxPrice
+
+    return
+
+def askHotelData():
+    return
+
+def askForString(message):
+    response = raw_input(message)
+    while response.strip().find(" ") != -1:
+        print "No puede contener espacios"
+        response = raw_input(message)
+        return response
+
 def main():
+    askFlightsData()
     configUrls()
 
-    username = raw_input("Nombre del usuario que usara el sistema: ")
-    while username.strip().find(" ") != -1:
-        print "El nombre de usuario no puede contener espacios"
-        username = raw_input("Nombre del usuario que usara el sistema: ")
+    username = askForString("Nombre del usuario que usara el sistema: ")
 
     option = -1
     while option != 0:
         print "0. Salir"
-        print "1. Buscar viaje"
-        print "2. Ir a la cesta de la compra"
-        print "3. Devolver un producto"
-        print "4. Consultar compras"
+        print "1. Buscar vuelo"
+        print "2. Buscar alojamiento (TODO)"
+        print "3. Buscar completo vuelo + alojamiento (TODO)"
+        print "4. Buscar actividades (TODO)"
+        print "5. Buscar completo (TODO)"
+
         option = raw_input("Escoge una opcion: ")
         print
         try:
             option = int(option)
-
-            if option not in [0, 1, 2, 3, 4]:
+            if option not in [0, 1, 2, 3, 4, 5]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
+                    askFlightsData()
                     return
                 if option == 2:
+                    askHotelData()
                     return
                 if option == 3:
                     return
                 if option == 4:
+                    return
+                if option == 5:
                     return
         except ValueError:
             print "Este valor ha de ser numerico"
