@@ -1,9 +1,8 @@
 from flask import Flask, request, Response
 from rdflib import Graph
-from AgentUtil import  ACLMessages
-from Constants import  Ontologies, FIPAACLPerformatives, Constants
-from Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
-
+from PracticaECSDI.AgentUtil import ACLMessages
+from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
+from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
 
 app = Flask(__name__)
 service = None

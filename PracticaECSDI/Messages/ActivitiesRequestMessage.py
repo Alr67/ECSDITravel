@@ -1,6 +1,6 @@
 from rdflib import Graph, Literal
 from rdflib.namespace import Namespace, FOAF
-from Constants import Ontologies, FIPAACLPerformatives, Constants
+from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
 class ActivitiesRequestMessage:
     def __init__(self,id,initDate,finalDate, maxPrice):

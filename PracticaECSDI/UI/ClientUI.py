@@ -1,10 +1,11 @@
 import sys
-import requests
 from datetime import date
-from Constants import Ontologies, FIPAACLPerformatives, Constants
-from AgentUtil.ACLMessages import build_message
-from Messages.FlightMessage import FlightMessage
-from Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
+import requests
+from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
+from PracticaECSDI.AgentUtil.ACLMessages import build_message
+from PracticaECSDI.Messages.FlightMessage import FlightMessage
+from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
+
 
 LocalhostUrl = "http://127.0.0.1:"
 
