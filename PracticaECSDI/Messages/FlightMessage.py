@@ -2,7 +2,7 @@ from rdflib import Graph, Literal
 from rdflib.namespace import Namespace, FOAF
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
-class ConsoleMessage:
+class FlightMessage:
     def __init__(self,uuid,maxprice):
         self.uuid = uuid
         self.maxPrice = maxprice

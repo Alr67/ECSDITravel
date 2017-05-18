@@ -2,7 +2,7 @@ import sys
 import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages import ConsoleMessage
+from PracticaECSDI.Messages.FlightMessage import FlightMessage
 AFlightUrl = "http://127.0.0.1:"
 
 def configUrls():
@@ -30,32 +30,17 @@ def configUrls():
 
 def askFlightsData():
     maxPrice = askForString("Max price: ")
-    #print "Max price to request: "+ maxPrice
-    flightsAgent = AFlightUrl + Constants.PORT_AFlights + "/comm"
-    messageData = ConsoleMessage(1, maxPrice)
-    resp = requests.post(flightsAgent,data = build_message(messageData.to_graph(),FIPAACLPerformatives.QUERY_IF, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
-    return
+    print 'Max price to request: ', maxPrice
+    flightsAgent = AFlightUrl + str(Constants.PORT_AFlights) + "/comm"
+    messageData = FlightMessage(1, maxPrice)
+    resp = requests.post(flightsAgent,data= build_message(messageData.to_graph(),FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
+    print resp
 
 def askHotelData():
     return
 
-def askForString(message):
-    response = raw_input(message)
-    while response.strip().find(" ") != -1:
-        print "No puede contener espacios"
-        response = raw_input(message)
-        return response
-
-def data_ToGraph():
-
-    return
 
 def main():
-    askFlightsData()
-
-
-
-    configUrls()
 
     username = askForString("Nombre del usuario que usara el sistema: ")
 
@@ -72,7 +57,7 @@ def main():
         print
         try:
             option = int(option)
-            if option not in [0, 1, 2, 3, 4, 5]:
+            if option not in [1, 2, 3, 4, 5]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
@@ -90,6 +75,14 @@ def main():
         except ValueError:
             print "Este valor ha de ser numerico"
         print
+
+
+def askForString(message):
+    response = raw_input(message)
+    while response.strip().find(" ") != -1:
+        print "No puede contener espacios"
+        response = raw_input(message)
+        return response
 
 
 if __name__ == "__main__":
