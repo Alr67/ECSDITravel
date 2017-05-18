@@ -19,12 +19,9 @@ def comm():
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
 
 
-@app.route('/itstime', methods=['GET', 'POST', 'PUT'])
-def time_to_send():
-    return service.time_to_send()
 
-def getFlies(graph):
-    #Call the other function
+def getFlights(graph):
+
     return "FLights response"
 
 def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
