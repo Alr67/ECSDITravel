@@ -3,6 +3,7 @@ import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
+from PracticaECSDI.Utils.UtilAcommodation import askHotelData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
 from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString
 from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
@@ -30,24 +31,6 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
-def askHotelData():
-    print 'Tell me about your hotels'
-    maxPrice = askForString("Max price: ")
-    print 'Max price to request: ', maxPrice
-    flightsAgent = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
-    print 'url: ', flightsAgent
-    messageData = FlightRequestMessage(1, maxPrice)
-    print 'data normal:'
-    print messageData
-    print 'data graph:'
-    gra = messageData.to_graph()
-    print gra
-    print 'finish data'
-    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format='xml')
-
-    resp = requests.post(flightsAgent, data=dataContent)
-    print 'he tornat a la consola clientUI'
-    print resp
 
 def main():
     #askFlightsData()
@@ -83,6 +66,7 @@ def main1():
                 if option == 3:
                     return
                 if option == 4:
+                    askActivitiesData()
                     return
                 if option == 5:
                     return
