@@ -50,7 +50,22 @@ def askFlightsData():
 
 def askHotelData():
     print 'Tell me about your hotels'
-    return
+    maxPrice = askForString("Max price: ")
+    print 'Max price to request: ', maxPrice
+    flightsAgent = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
+    print 'url: ', flightsAgent
+    messageData = FlightMessage(1, maxPrice)
+    print 'data normal:'
+    print messageData
+    print 'data graph:'
+    gra = messageData.to_graph()
+    print gra
+    print 'finish data'
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format='xml')
+
+    resp = requests.post(flightsAgent, data=dataContent)
+    print 'he tornat a la consola clientUI'
+    print resp
 
 def main():
     #askFlightsData()
@@ -103,4 +118,4 @@ if __name__ == "__main__":
     # auser = sys.argv[1]
     # apurchases = sys.argv[2]
     # cart = {}
-    main()
+    main1()
