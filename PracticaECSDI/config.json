@@ -1,0 +1,8 @@
+{
+    "API_KEY_GOOGLE": "AIzaSyAoB6cWflEqNxzyfP_SIt1rxjy51CbFm2Q",
+    "API_KEY_SKYSCANNER":"sa",
+    "API_KEY_AMADEUS": "qwe",
+    "//TODO": "REMOVE SKYSCANNER & AMADEUS api keys from git!!!!!",
+    "urlHelp":"https://gist.github.com/derzorngottes/3b57edc1f996dddcab25"
+}
+

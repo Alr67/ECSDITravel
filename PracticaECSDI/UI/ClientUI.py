@@ -29,6 +29,8 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
+
+
 def askFlightsData():
     print 'Tell me about your flights'
     maxPrice = askForString("Max price: ")
