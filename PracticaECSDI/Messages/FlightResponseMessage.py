@@ -28,12 +28,12 @@ class FlightResponseMessage:
     def from_graph(cls,graph):
         query = """SELECT ?x ?uuid ?idflight ?price ?company ?departurehour ?arrivalhour
                     WHERE {
-                        ?x ns1:Uuid2 ?uuid.
-                        ?x ns1:idflight ?idflight.
-                        ?x ns1:price ?price.
-                        ?x ns1:company ?company.
-                        ?x ns1:departurehour ?departurehour.
-                        ?x ns1:arrivalhour ?arrivalhour
+                        ?x ns1:Uuid ?uuid.
+                        ?x ns1:IdFlight ?idflight.
+                        ?x ns1:Price ?price.
+                        ?x ns1:Company ?company.
+                        ?x ns1:DepartureHour ?departurehour.
+                        ?x ns1:ArrivalHour ?arrivalhour
                     }
                 """
         flight = graph.query(query)

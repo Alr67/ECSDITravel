@@ -1,9 +1,5 @@
-import sys
-import requests
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData
+from PracticaECSDI.Utils.UtilActivities import askActivitiesData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
 from PracticaECSDI.Utils.UtilGeneral import askForInt, askForString
 from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
@@ -74,7 +70,7 @@ def main1():
         print "\nEscoge una opcion: "
         print "0. Salir"
         print "1. Buscar vuelo"
-        print "2. Buscar alojamiento (TODO)"
+        print "2. Buscar alojamiento"
         print "3. Buscar completo vuelo + alojamiento (TODO)"
         print "4. Buscar actividades (TODO)"
         print "5. Pagar viaje"

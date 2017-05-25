@@ -7,6 +7,13 @@ from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
 from PracticaECSDI.Messages.FlightResponseMessage import FlightResponseMessage
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
+import json
+import urllib2
+
+QPX_END_POINT = 'https://www.googleapis.com/qpxExpress/v1/trips/search'
+QPX_API_FLIGHT = ''
+headers = {'content-type': 'application/json'}
+
 app = Flask(__name__)
 service = None
 
@@ -17,7 +24,7 @@ def comm():
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_FLIGHT_REQUEST:
         flights = getFlights(graph)
-        return flights.serialize()
+        return flights
     else:
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
 
@@ -69,7 +76,7 @@ def getFlights(graph):
     return "Flights response"""
 
     print 'im in get flights from graph'
-    data =FlightRequestMessage.from_graph(graph)
+    data = FlightRequestMessage.from_graph(graph)
     print 'data obtained: ', data
     print 'initDate: ', data.firstDay
     print 'lastDay: ', data.lastDay
@@ -77,10 +84,41 @@ def getFlights(graph):
     print 'departureAirport: ', data.departureAirport
     print 'arrivalAirport: ', data.arrivalAirport
     responseObj = FlightResponseMessage(1, 333, 30, "Ryanair", "12:15", "19:30")
-    # TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
                                 Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
     return dataContent
+
+    #Request google flights
+    """payload = {
+        "request": {
+            "slice": [
+                {
+                    "origin": "BCN",
+                    "destination": "ARN",
+                    "date": "2017-05-28"
+                },
+                {
+                    "origin": "ARN",
+                    "destination": "BCN",
+                    "date": "2017-05-30"
+                }
+            ],
+            "passengers": {
+                "adultCount": 1,
+                "infantInLapCount": 0,
+                "infantInSeatCount": 0,
+                "childCount": 0,
+                "seniorCount": 0
+            },
+            "solutions": 1,
+            "maxPrice": "EUR700",
+            "refundable": false
+        }
+    }
+
+    result = requests.post(QPX_END_POINT, params={'key': QPX_API_KEY}, data=json.dumps(payload), headers=headers)
+
+    return result"""
 
 
 if __name__ == '__main__':
