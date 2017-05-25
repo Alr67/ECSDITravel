@@ -45,7 +45,6 @@ class ActivitiesResponseMessage:
         for f,uuid,activity1,activity2,activity3,date in day:
             new = DayPlan(uuid.toPython(),date.toPython(),activity1.toPython(),activity2.toPython(),activity3.toPython())
             days.append(new)
-            print "uid: ", new.uuid
 
         query = """SELECT ?x ?uuid
                     WHERE {

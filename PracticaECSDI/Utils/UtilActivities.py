@@ -9,8 +9,19 @@ from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseM
 from PracticaECSDI.AgentUtil.ACLMessages import build_message,get_message_performative
 from PracticaECSDI.AgentUtil import ACLMessages
 
+def directToAct():
+    activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
+    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200)
+    gra = messageData.to_graph()
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
+    resp = requests.post(activities_url, data=dataContent)
+    print 'Ja tinc les activitats, processant la resposta...'
+    processActivitiesResult(resp)
+    print "Gracies per confiar en nosaltres, disfruti del plan :)"
+    return
 
 def askActivitiesData():
+    directToAct()
     print 'Tell me about your activities'
     maxPrice = askForInt("Max price: ")
     print 'Max price to request: ', maxPrice
@@ -23,19 +34,18 @@ def askActivitiesData():
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
 
     resp = requests.post(activities_url, data=dataContent)
-    print 'he tornat a la consola clientUI, anem a processar la resposta'
+    print 'Ja tinc les activitats, processant la resposta...'
     processActivitiesResult(resp)
-    print "He acabat de processar la resposta"
+    print "Gracies per confiar en nosaltres, disfruti del plan :)"
 
     return
 
 def processActivitiesResult(response):
     dat = response.text
-    #print "Register response was {}".format(dat)
+    print "Register response was {}".format(dat)
     rPerformative = get_message_performative(Graph().parse(data=dat))
     if rPerformative == FIPAACLPerformatives.AGREE:
     #TO-ASK: cal agafar la ontologia de la resposta?
-        print "Success request"
         graph = Graph().parse(data=dat, format='xml')
         actResult = ActivitiesResponseMessage.from_graph(graph)
 
