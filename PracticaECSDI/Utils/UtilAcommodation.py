@@ -39,7 +39,7 @@ def processAcommodationResult(response):
     if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
         print "Success request"
         acommResult = AcommodationResponseMessage.from_graph(graph)
-        print acommResult
+        print acommResult.name
 
     #else:
         #print "Activities error"

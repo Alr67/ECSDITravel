@@ -16,8 +16,8 @@ class AcommodationResponseMessage:
         prod = namespace.__getattr__('#ResponseAcommodation#'+str(self.uuid))
         graph.add((prod,FOAF.Uuid,Literal(self.uuid)))
         graph.add((prod,FOAF.Price,Literal(self.price)))
-        graph.add((prod, FOAF.Name, Literal(self.name)))
-        graph.add((prod, FOAF.Street, Literal(self.street)))
+        graph.add((prod,FOAF.Name, Literal(self.name)))
+        graph.add((prod,FOAF.Street, Literal(self.street)))
         return graph
 
 
@@ -26,13 +26,11 @@ class AcommodationResponseMessage:
         query = """SELECT ?x ?uuid ?hotelName ?hotelPrice ?hotelStreet
                     WHERE {
                         ?x ns1:Uuid ?uuid.
-                        ?x ns1:HotelName ?hotelName.
-                        ?x ns1:HotelPrice ?hotelPrice.
-                        ?x ns1:HotelStreet ?hotelStreet
+                        ?x ns1:Name ?hotelName.
+                        ?x ns1:Price ?hotelPrice.
+                        ?x ns1:Street ?hotelStreet
                     }
                 """
         resp = graph.query(query)
         for f, uuid, hotelName, hotelPrice, hotelStreet in resp:
-            return AcommodationResponseMessage(uuid.toPython(), hotelName.toPython(), hotelPrice.toPython(),
-                                               hotelStreet.toPython())
-
+            return AcommodationResponseMessage(uuid.toPython(), hotelName.toPython(), hotelPrice.toPython(),hotelStreet.toPython())

@@ -1,12 +1,8 @@
-import sys
-import requests
-from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData
+from PracticaECSDI.Utils.UtilActivities import askActivitiesData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
-from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString
-from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
+from PracticaECSDI.Utils.UtilGeneral import askForString
+
 
 def configUrls():
     configOption = -1
@@ -31,9 +27,6 @@ def configUrls():
             print "El valor ha de ser numerico"
         print
 
-def askHotelData():
-    print 'Tell me about your hotels'
-    return
 def main():
     #askFlightsData()
     askActivitiesData()
