@@ -28,7 +28,7 @@ class AcommodationRequestMessage:
                 ?x ns1:Uuid ?uuid.
                 ?x ns1:MaxPrice ?maxPrice.
                 ?x ns1:FirstDay ?firstDay.
-                ?x ns1:LastDay ?lastDay
+                ?x ns1:LastDay ?lastDay.
                 ?x ns1:City ?city
             }
         """

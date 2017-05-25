@@ -47,9 +47,9 @@ def main1():
     while option != 0:
         print "0. Salir"
         print "1. Buscar vuelo"
-        print "2. Buscar alojamiento (TODO)"
+        print "2. Buscar alojamiento"
         print "3. Buscar completo vuelo + alojamiento (TODO)"
-        print "4. Buscar actividades (TODO)"
+        print "4. Buscar actividades"
         print "5. Buscar completo (TODO)"
 
         option = raw_input("Escoge una opcion: ")

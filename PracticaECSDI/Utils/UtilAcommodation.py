@@ -3,7 +3,7 @@ from rdflib import Graph
 
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.Messages import AcommodationResponseMessage
+from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
 from PracticaECSDI.Messages.AcommodationRequestMessage import AcommodationRequestMessage
 from PracticaECSDI.Utils.UtilGeneral import askForString, askForInt, askForDate
 
