@@ -3,9 +3,9 @@ from rdflib import Graph
 
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
 from PracticaECSDI.Messages.AcommodationRequestMessage import AcommodationRequestMessage
-from PracticaECSDI.Utils.UtilGeneral import askForString, askForInt, askForDate
+from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
+from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity
 
 
 def askHotelData():
@@ -16,7 +16,7 @@ def askHotelData():
     print 'url: ', acommURL
     initDate = askForDate("Enter the check in date")
     finDate = askForDate("Enter check out date")
-    travelCity = askForString("Tell me where ")
+    travelCity = askForCity("Enter the city where you will stay (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
     messageData = AcommodationRequestMessage(1, initDate, finDate, maxPrice, travelCity)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACOMMODATION_REQUEST).serialize(
