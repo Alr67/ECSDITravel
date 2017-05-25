@@ -11,7 +11,7 @@ Created on 08/02/2014
 __author__ = 'javier'
 
 import requests
-from rdflib import Graph
+from rdflib import Graph, Literal
 from rdflib.namespace import RDF
 
 from PracticaECSDI.AgentUtil.OntoNamespaces import ACL
@@ -29,7 +29,7 @@ def get_message_predicate(gmess, predicate):
     for a, b, c in gmess.triples((None, predicate, None)):
         return c
 
-def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt= 0):
+def build_message(gmess, perf, ontology, sender=None, receiver=None,  content=None, msgcnt= 0):
     """
     Construye un mensaje como una performativa FIPA acl
     Asume que en el grafo que se recibe esta ya el contenido y esta ligado al
@@ -48,8 +48,9 @@ def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt
     ms = ACL[mssid]
     gmess.bind('acl', ACL)
     gmess.add((ms, RDF.type, ACL.FipaAclMessage))
-    gmess.add((ms, ACL.performative, perf))
-    gmess.add((ms, ACL.sender, sender))
+    gmess.add((ms, ACL.performative, Literal(perf)))
+    gmess.add((ms, ACL.sender, Literal(sender)))
+    gmess.add((ms, ACL.ontology, Literal(ontology)))
     if receiver is not None:
         gmess.add((ms, ACL.receiver, receiver))
     if content is not None:

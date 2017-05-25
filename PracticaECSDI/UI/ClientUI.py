@@ -2,8 +2,12 @@ import sys
 import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages.FlightMessage import FlightMessage
-AFlightUrl = "http://127.0.0.1:"
+from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
+from PracticaECSDI.Utils.UtilAcommodation import askHotelData
+from PracticaECSDI.Utils.UtilFlights import askFlightsData
+from PracticaECSDI.Utils.UtilGeneral import askForInt, askForString
+from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
+
 
 def configUrls():
     configOption = -1
@@ -14,82 +18,95 @@ def configUrls():
         print
         try:
             configOption = int(configOption)
-            if configOption not in [0,1]:
+            if configOption not in [0, 1]:
                 print ("Opcion incorrecta")
             else:
                 if configOption == 0:
                     break
                 if configOption == 1:
                     AFlightUrl = askForString("Url/ip del agente de vuelos: ")
-                    print "Url/ip del agente de vuelos que usara el sistema: "+AFlightUrl
+                    print "Url/ip del agente de vuelos que usara el sistema: " + AFlightUrl
                     print
                     return
         except ValueError:
             print "El valor ha de ser numerico"
-        print
-
-def askFlightsData():
-    maxPrice = askForString("Max price: ")
-    print 'Max price to request: ', maxPrice
-    flightsAgent = AFlightUrl + str(Constants.PORT_AFlights) + "/comm"
-    messageData = FlightMessage(1, maxPrice)
-    resp = requests.post(flightsAgent, data=build_message(messageData.to_graph(),FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
-    print resp
 
 def askHotelData():
+    print 'Tell me about your hotels'
     return
 
+def askPayment():
+    print "\nEstas son las caracteristicas del viaje: dsdfsdfsdfsdfsdf"
+    print "Quieres confirmar y pagar este viaje?"
+    print "1. Si"
+    print "2. No"
+    print "3. Sinpa"
+
+    try:
+        option = raw_input("")
+        option = int(option)
+        if option not in [1, 2, 3, 4, 5]:
+            print ("Opcion incorrecta")
+        else:
+            if option == 1:
+                a = 1  # something
+                return
+            if option == 2:
+                a = 1  # something
+                return
+            if option == 3:
+                print "\nTu eres tonto?"
+                return
+    except ValueError:
+        print "Este valor debe ser numerico"
 
 def main():
+    #askFlightsData()
+    askActivitiesData()
+    #askHotelData()
 
+
+def main1():
     username = askForString("Nombre del usuario que usara el sistema: ")
 
     option = -1
     while option != 0:
+        print "\nEscoge una opcion: "
         print "0. Salir"
         print "1. Buscar vuelo"
         print "2. Buscar alojamiento (TODO)"
         print "3. Buscar completo vuelo + alojamiento (TODO)"
         print "4. Buscar actividades (TODO)"
-        print "5. Buscar completo (TODO)"
+        print "5. Pagar viaje"
+        print "6. Buscar completo (TODO)\n"
 
-        option = raw_input("Escoge una opcion: ")
-        print
+        option = raw_input("")
         try:
             option = int(option)
-            if option not in [1, 2, 3, 4, 5]:
+            if option not in [1, 2, 3, 4, 5, 6]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
                     askFlightsData()
-                    return
                 if option == 2:
                     askHotelData()
-                    return
                 if option == 3:
-                    return
+                    a =  1 #something
                 if option == 4:
-                    return
+                    askActivitiesData()
                 if option == 5:
-                    return
+                    askPayment()
+                if option == 6:
+                    a = 1 #something
         except ValueError:
-            print "Este valor ha de ser numerico"
-        print
-
-
-def askForString(message):
-    response = raw_input(message)
-    while response.strip().find(" ") != -1:
-        print "No puede contener espacios"
-        response = raw_input(message)
-        return response
+            print "Este valor debe ser numerico\n"
 
 
 if __name__ == "__main__":
-    #if len(sys.argv) != 3:
-        #print "USAGE: python UserInteface {AUSER_URI} {APURCHASES_URI}"
-        #exit(-1)
-    #auser = sys.argv[1]
-    #apurchases = sys.argv[2]
-    #cart = {}
-    main()
+    # if len(sys.argv) != 3:
+    # print "USAGE: python UserInteface {AUSER_URI} {APURCHASES_URI}"
+    # exit(-1)
+    # auser = sys.argv[1]
+    # apurchases = sys.argv[2]
+    # cart = {}
+    main1()
