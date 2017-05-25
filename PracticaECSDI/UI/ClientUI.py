@@ -33,7 +33,7 @@ def askFlightsData():
     print 'Max price to request: ', maxPrice
     flightsAgent = AFlightUrl + str(Constants.PORT_AFlights) + "/comm"
     messageData = FlightMessage(1, maxPrice)
-    resp = requests.post(flightsAgent,data= build_message(messageData.to_graph(),FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
+    resp = requests.post(flightsAgent, data=build_message(messageData.to_graph(),FIPAACLPerformatives.REQUEST, Ontologies.FLIGHT_REQUEST).serialize(format="xml"))
     print resp
 
 def askHotelData():
