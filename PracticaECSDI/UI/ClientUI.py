@@ -1,8 +1,7 @@
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData
 from PracticaECSDI.Utils.UtilActivities import askActivitiesData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
-from PracticaECSDI.Utils.UtilGeneral import askForInt, askForString
-from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
+from PracticaECSDI.Utils.UtilGeneral import askForString
 
 
 def configUrls():
@@ -27,9 +26,6 @@ def configUrls():
         except ValueError:
             print "El valor ha de ser numerico"
 
-def askHotelData():
-    print 'Tell me about your hotels'
-    return
 
 def askPayment():
     print "\nEstas son las caracteristicas del viaje: dsdfsdfsdfsdfsdf"
