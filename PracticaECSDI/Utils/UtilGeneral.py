@@ -1,4 +1,5 @@
 from datetime import date
+from collections import Counter
 
 maxYear = 2020
 
@@ -52,3 +53,27 @@ def askForDate(message):
             pass
             print("Year must be between 2017 and ",maxYear," ...")
     return date(year,month,day)
+
+def askForCity(response):
+    while True:
+        try:
+            city = raw_input(response)
+            city = city.strip()
+            if city == 'Barcelona':
+                return 'BCN'
+            elif city == 'Paris':
+                return 'CDG'
+            elif city == 'Londres':
+                return 'GTW'
+            elif city == 'Madrid':
+                return 'MAD'
+            elif city == 'Estocolmo':
+                return 'ARN'
+            elif city == 'Milan':
+                return 'MXP'
+            else:
+                raise ValueError('Not a valid city...')
+            break
+        except:
+            pass
+            print("Not a valid city...")
