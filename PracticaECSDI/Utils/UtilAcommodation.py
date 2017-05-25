@@ -16,7 +16,7 @@ def askHotelData():
     print 'url: ', acommURL
     initDate = askForDate("Enter the check in date")
     finDate = askForDate("Enter check out date")
-    travelCity = askForString("Tell me where")
+    travelCity = askForString("Tell me where ")
     messageData = AcommodationRequestMessage(1, initDate, finDate, maxPrice, travelCity)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACOMMODATION_REQUEST).serialize(
@@ -39,7 +39,10 @@ def processAcommodationResult(response):
     if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
         print "Success request"
         acommResult = AcommodationResponseMessage.from_graph(graph)
-        print acommResult.name
+        print "El hotel encontrado es: "
+        print "Nombre: ",acommResult.name
+        print "Direccion: ",acommResult.street
+        print "Precio: ",acommResult.price
 
     #else:
         #print "Activities error"
