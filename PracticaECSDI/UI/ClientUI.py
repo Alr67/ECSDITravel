@@ -2,7 +2,7 @@ import sys
 import requests
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
-from PracticaECSDI.Messages.FlightMessage import FlightMessage
+from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
 from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString
 from PracticaECSDI.Utils.UtilActivities import  askActivitiesData
 
@@ -35,7 +35,7 @@ def askFlightsData():
     print 'Max price to request: ', maxPrice
     flightsAgent = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
     print 'url: ', flightsAgent
-    messageData = FlightMessage(1, maxPrice)
+    messageData = FlightRequestMessage(1, maxPrice)
     print 'data normal:'
     print messageData
     print 'data graph:'
@@ -54,7 +54,7 @@ def askHotelData():
     print 'Max price to request: ', maxPrice
     flightsAgent = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
     print 'url: ', flightsAgent
-    messageData = FlightMessage(1, maxPrice)
+    messageData = FlightRequestMessage(1, maxPrice)
     print 'data normal:'
     print messageData
     print 'data graph:'

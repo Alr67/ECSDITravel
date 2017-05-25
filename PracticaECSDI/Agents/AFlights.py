@@ -2,6 +2,8 @@ from flask import Flask, request, Response
 from skyscanner.skyscanner import Flights
 from rdflib import Graph
 from PracticaECSDI.AgentUtil import ACLMessages
+from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
+from PracticaECSDI.Messages.FlightResponseMessage import FlightResponseMessage
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
 app = Flask(__name__)
@@ -10,24 +12,26 @@ service = None
 
 @app.route('/comm', methods=['GET', 'POST'])
 def comm():
-    print 'Im in Flights Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.FLIGHT_REQUEST:
-        print 'Its a flight request'
-        flights = getFlies(graph)
+        flights = getFlights(graph)
         return flights.serialize()
     else:
-        print 'I dont understand'
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
 
-
+@app.route('/itstime', methods=['GET', 'POST', 'PUT'])
+def time_to_send():
+    return service.time_to_send()
 
 def getFlights(graph):
-    print 'im in get flies from graph'
-    return "FLights response"
+    infoFlight = Flights.FlightMessage.from_graph(graph)
+    maxprice = infoFlight.maxprice
+    initdate = infoFlight.initdate
+    finaldate = infoFlight.finaldate
+    fromcity = infoFlight.fromcity
+    tocity = infoFlight.tocity
 
-def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
     # GO TO SKYSCANER and get the vuelos anda i tornada
     # api-key: fi768769083827246592561385220425 (conta de cris)
     # https://skyscanner.github.io/slate/#browse-quotes
@@ -37,24 +41,24 @@ def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
 
     flights_service = Flights('fi768769083827246592561385220425')
 
-    if fromCity =='Barcelona':
-        fromCity='BCN'
-        count='ES'
-    elif fromCity == 'Paris':
+    if fromcity == 'Barcelona':
+        fromCity = 'BCN'
+        count = 'ES'
+    elif fromcity == 'Paris':
         fromCity = 'PARI'
         count = 'FR'
-    elif fromCity == 'Londres':
+    elif fromcity == 'Londres':
         fromCity = 'LOND'
-        count='UK'
-    elif fromCity == 'Madrid':
+        count = 'UK'
+    """elif fromcity == 'Madrid':
         fromCity = 'MAD'
-        count='ES'
-    elif fromCity == 'Estocolm':
+        count = 'ES'
+    elif fromcity == 'Estocolm':
         fromCity = 'STOC'
-        count='SE'
-    elif fromCity == 'Milan':
+        count = 'SE'
+    elif fromcity == 'Milan':
         fromCity = 'Mila'
-        count='IT'
+        count = 'IT'"""
 
     """ result = flights_service.get_result(
     country=count,
@@ -62,21 +66,24 @@ def getFlies(maxprice, initDate, finalDate, fromCity, toCity):
     locale='es-ES',
     originplace=fromCity,
     destinationplace=toCity,
-    outbounddate=initDate,
-    inbounddate=finalDate,
+    outbounddate=initdate,
+    inbounddate=finaldate,
     adults=1).parsed"""
 
     result = flights_service.get_result(
-    country='UK',
-    currency='GBP',
-    locale='en-GB',
-    originplace='SIN-sky',
-    destinationplace='KUL-sky',
-    outbounddate='2017-05-28',
-    inbounddate='2017-05-31',
-    adults=1).parsed
+        country='UK',
+        currency='GBP',
+        locale='en-GB',
+        originplace='SIN-sky',
+        destinationplace='KUL-sky',
+        outbounddate='2017-05-28',
+        inbounddate='2017-05-31',
+        adults=1).parsed
 
-    return result
+    #return result
+
+    return "FLights response"
+
 
 if __name__ == '__main__':
     app.run(port=Constants.PORT_AFlights, debug=True)
