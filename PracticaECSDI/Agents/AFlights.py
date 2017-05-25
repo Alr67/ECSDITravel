@@ -9,9 +9,10 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
 import json
 import urllib2
+import requests
 
 QPX_END_POINT = 'https://www.googleapis.com/qpxExpress/v1/trips/search'
-QPX_API_FLIGHT = ''
+QPX_API_KEY = 'AIzaSyBmqGFeBCyqLUUvhvbS8WPOnm5WxVX2Vrk'
 headers = {'content-type': 'application/json'}
 
 app = Flask(__name__)
@@ -33,74 +34,33 @@ def time_to_send():
     return service.time_to_send()
 
 def getFlights(graph):
-    """infoFlight = Flights.FlightMessage.from_graph(graph)
-    maxprice = infoFlight.maxprice
-    initdate = infoFlight.initdate
-    finaldate = infoFlight.finaldate
-    fromcity = infoFlight.fromcity
-    tocity = infoFlight.tocity
-
-    # GO TO SKYSCANER and get the vuelos anda i tornada
-    # api-key: fi768769083827246592561385220425 (conta de cris)
-    # https://skyscanner.github.io/slate/#browse-quotes
-    # outboundPartialDate: (required) Format "yyyy-mm-dd", "yyyy-mm" or "anytime".
-    # inboundPartialDate: (optional) Format "yyyy-mm-dd", "yyyy-mm" or "anytime". Use empty string for oneway trip.
-    # examples: https://skyscanner.readthedocs.io/en/latest/usage.html
-    
-    #PROBAAAAR GOOOOGLEEEE FLIGHTS MEJOR PINTA EVER
-
-    flights_service = Flights('fi768769083827246592561385220425')
-
-    result = flights_service.get_result(
-        country=count,
-        currency='EUR',
-        locale='es-ES',
-        originplace=fromCity,
-        destinationplace=toCity,
-        outbounddate=initdate,
-        inbounddate=finaldate,
-        adults=1).parsed
-
-    result = flights_service.get_result(
-        country='UK',
-        currency='GBP',
-        locale='en-GB',
-        originplace='SIN-sky',
-        destinationplace='KUL-sky',
-        outbounddate='2017-05-28',
-        inbounddate='2017-05-31',
-        adults=1).parsed
-
-    #return result
-
-    return "Flights response"""
-
     print 'im in get flights from graph'
+
     data = FlightRequestMessage.from_graph(graph)
+
     print 'data obtained: ', data
     print 'initDate: ', data.firstDay
     print 'lastDay: ', data.lastDay
     print 'maxPrice: ', data.maxPrice
     print 'departureAirport: ', data.departureAirport
     print 'arrivalAirport: ', data.arrivalAirport
-    responseObj = FlightResponseMessage(1, 333, 30, "Ryanair", "12:15", "19:30")
-    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
-                                Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
-    return dataContent
+
+    print "EUR" + str(data.maxPrice)
 
     #Request google flights
-    """payload = {
+
+    code = {
         "request": {
             "slice": [
                 {
-                    "origin": "BCN",
-                    "destination": "ARN",
-                    "date": "2017-05-28"
+                    "origin": data.departureAirport,
+                    "destination": data.arrivalAirport,
+                    "date": data.firstDay.strftime("%Y-%m-%d")
                 },
                 {
-                    "origin": "ARN",
-                    "destination": "BCN",
-                    "date": "2017-05-30"
+                    "origin": data.arrivalAirport,
+                    "destination": data.departureAirport,
+                    "date": data.lastDay.strftime("%Y-%m-%d")
                 }
             ],
             "passengers": {
@@ -111,15 +71,41 @@ def getFlights(graph):
                 "seniorCount": 0
             },
             "solutions": 1,
-            "maxPrice": "EUR700",
-            "refundable": false
+            "maxPrice": "EUR" + str(data.maxPrice),
+            "saleCountry": "ES",
+            "refundable": "false"
         }
     }
 
-    result = requests.post(QPX_END_POINT, params={'key': QPX_API_KEY}, data=json.dumps(payload), headers=headers)
+    r = requests.post(QPX_END_POINT, params={'key': QPX_API_KEY}, data=json.dumps(code), headers=headers)
+    result = r.json()
 
-    return result"""
+    if 'tripOption' in result['trips']:
+        for trip in result['trips']['tripOption']:
+            price = trip['pricing'][0]['saleTotal']
 
+            idflightgo = trip['slice'][0]['segment'][0]['flight']['number']
+            companygo = trip['slice'][0]['segment'][0]['flight']['carrier']
+            departurehourgo = trip['slice'][0]['segment'][0]['leg'][0]['departureTime']
+            arrivalhourgo = trip['slice'][0]['segment'][0]['leg'][0]['arrivalTime']
+
+            idflightreturn = trip['slice'][1]['segment'][0]['flight']['number']
+            companyreturn = trip['slice'][1]['segment'][0]['flight']['carrier']
+            departurehourreturn = trip['slice'][1]['segment'][0]['leg'][0]['departureTime']
+            arrivalhourreturn = trip['slice'][1]['segment'][0]['leg'][0]['arrivalTime']
+
+
+        responseObj = FlightResponseMessage(data.uuid, price, idflightgo, companygo, departurehourgo, arrivalhourgo,
+                                            idflightreturn, companyreturn, departurehourreturn, arrivalhourreturn)
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
+                                    Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
+        return dataContent
+
+    else:
+        responseObj = FlightResponseMessage(0, 0, 0, 0, 0, 0)
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.DISCONFIRM,
+                                    Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
+        return dataContent
 
 if __name__ == '__main__':
     app.run(port=Constants.PORT_AFlights, debug=True)

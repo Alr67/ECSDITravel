@@ -32,8 +32,8 @@ class FlightRequestMessage:
                 ?x ns1:MaxPrice ?maxPrice.
                 ?x ns1:FirstDay ?firstDay.
                 ?x ns1:LastDay ?lastDay.
-                ?x ns1:ArrivalAirport ?arrivalAirport.
-                ?x ns1:DepartureAirport ?departureAirport
+                ?x ns1:DepartureAirport ?departureAirport.
+                ?x ns1:ArrivalAirport ?arrivalAirport
            }
         """
         qres = graph.query(query)
@@ -44,9 +44,9 @@ class FlightRequestMessage:
                 maxprice.toPython(),
                 firstDay.toPython(),
                 lastDay.toPython(),
-                arrivalAirport.toPython(),
-                departureAirport.toPython()
+                departureAirport.toPython(),
+                arrivalAirport.toPython()
             ))"""
             return FlightRequestMessage(uuid.toPython(), maxprice.toPython(), firstDay.toPython(), lastDay.toPython(),
-                                        arrivalAirport.toPython(), departureAirport.toPython())
+                                        departureAirport.toPython(),arrivalAirport.toPython())
         #return search_res

@@ -66,11 +66,16 @@ def processFlightsResult(resp):
         graph = Graph().parse(data=flightgo, format='xml')
         fliResult = FlightResponseMessage.from_graph(graph)
 
-        print "flight 1: ", fliResult.uuid
-        print "ID Flight 1: ", fliResult.idflight
-        print "price 1: ", fliResult.price
-        print "company 1: ", fliResult.company
-        print "departure hour 1: ", fliResult.departurehour
-        print "arrival hour 1: ", fliResult.arrivalhour
+        print "flights: ", fliResult.uuid
+        print "price: ", fliResult.price
+        print "ID Flight 1: ", fliResult.idflightgo
+        print "company 1: ", fliResult.companygo
+        print "departure hour 1: ", fliResult.departurehourgo
+        print "arrival hour 1: ", fliResult.arrivalhourgo
+        print "ID Flight 2: ", fliResult.idflightback
+        print "company 2: ", fliResult.companyback
+        print "departure hour 2: ", fliResult.departurehourback
+        print "arrival hour 2: ", fliResult.arrivalhourback
+
     else:
-        print "Flight 1 error"
+        print "There are no flights with those features"
