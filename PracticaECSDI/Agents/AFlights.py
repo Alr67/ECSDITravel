@@ -2,6 +2,7 @@ from flask import Flask, request, Response
 from skyscanner.skyscanner import Flights
 from rdflib import Graph
 from PracticaECSDI.AgentUtil import ACLMessages
+from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
 from PracticaECSDI.Messages.FlightResponseMessage import FlightResponseMessage
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
@@ -14,7 +15,7 @@ service = None
 def comm():
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
-    if ontology == Ontologies.FLIGHT_REQUEST:
+    if ontology == Ontologies.SEND_FLIGHT_REQUEST:
         flights = getFlights(graph)
         return flights.serialize()
     else:
@@ -25,7 +26,7 @@ def time_to_send():
     return service.time_to_send()
 
 def getFlights(graph):
-    infoFlight = Flights.FlightMessage.from_graph(graph)
+    """infoFlight = Flights.FlightMessage.from_graph(graph)
     maxprice = infoFlight.maxprice
     initdate = infoFlight.initdate
     finaldate = infoFlight.finaldate
@@ -38,37 +39,20 @@ def getFlights(graph):
     # outboundPartialDate: (required) Format "yyyy-mm-dd", "yyyy-mm" or "anytime".
     # inboundPartialDate: (optional) Format "yyyy-mm-dd", "yyyy-mm" or "anytime". Use empty string for oneway trip.
     # examples: https://skyscanner.readthedocs.io/en/latest/usage.html
+    
+    #PROBAAAAR GOOOOGLEEEE FLIGHTS MEJOR PINTA EVER
 
     flights_service = Flights('fi768769083827246592561385220425')
 
-    if fromcity == 'Barcelona':
-        fromCity = 'BCN'
-        count = 'ES'
-    elif fromcity == 'Paris':
-        fromCity = 'PARI'
-        count = 'FR'
-    elif fromcity == 'Londres':
-        fromCity = 'LOND'
-        count = 'UK'
-    """elif fromcity == 'Madrid':
-        fromCity = 'MAD'
-        count = 'ES'
-    elif fromcity == 'Estocolm':
-        fromCity = 'STOC'
-        count = 'SE'
-    elif fromcity == 'Milan':
-        fromCity = 'Mila'
-        count = 'IT'"""
-
-    """ result = flights_service.get_result(
-    country=count,
-    currency='EUR',
-    locale='es-ES',
-    originplace=fromCity,
-    destinationplace=toCity,
-    outbounddate=initdate,
-    inbounddate=finaldate,
-    adults=1).parsed"""
+    result = flights_service.get_result(
+        country=count,
+        currency='EUR',
+        locale='es-ES',
+        originplace=fromCity,
+        destinationplace=toCity,
+        outbounddate=initdate,
+        inbounddate=finaldate,
+        adults=1).parsed
 
     result = flights_service.get_result(
         country='UK',
@@ -82,7 +66,21 @@ def getFlights(graph):
 
     #return result
 
-    return "FLights response"
+    return "Flights response"""
+
+    print 'im in get flights from graph'
+    data =FlightRequestMessage.from_graph(graph)
+    print 'data obtained: ', data
+    print 'initDate: ', data.firstDay
+    print 'lastDay: ', data.lastDay
+    print 'maxPrice: ', data.maxPrice
+    print 'departureAirport: ', data.departureAirport
+    print 'arrivalAirport: ', data.arrivalAirport
+    responseObj = FlightResponseMessage(1, 333, 30, "Ryanair", "12:15", "19:30")
+    # TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
+    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
+                                Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
+    return dataContent
 
 
 if __name__ == '__main__':

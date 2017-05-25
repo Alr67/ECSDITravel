@@ -4,13 +4,13 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 
 
 class FlightRequestMessage:
-    def __init__(self, uuid, maxprice,initDate,finalDate,arrivalAirport,departureAirport):
+    def __init__(self, uuid, maxprice,initDate,finalDate,departureAirport,arrivalAirport):
         self.uuid = uuid
         self.maxPrice = maxprice
         self.firstDay = initDate
         self.lastDay = finalDate
-        self.arrivalAirport = arrivalAirport
         self.departureAirport = departureAirport
+        self.arrivalAirport = arrivalAirport
 
     def to_graph(self):
         graph = Graph()
@@ -20,8 +20,9 @@ class FlightRequestMessage:
         graph.add((flight, FOAF.MaxPrice, Literal(self.maxPrice)))
         graph.add((flight,FOAF.FirstDay,Literal(self.firstDay)))
         graph.add((flight,FOAF.LastDay,Literal(self.lastDay)))
-        graph.add((flight,FOAF.arrivalAirport,Literal(self.arrivalAirport)))
+
         graph.add((flight,FOAF.departureAirport,Literal(self.departureAirport)))
+        graph.add((flight,FOAF.arrivalAirport,Literal(self.arrivalAirport)))
         return graph
 
     @classmethod
