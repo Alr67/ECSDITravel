@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, request, Response
+from flask import Flask, request, json
 from rdflib import Graph
 import datetime
 from PracticaECSDI.AgentUtil import ACLMessages
@@ -35,22 +35,35 @@ def getAcommodation(graph):
     print  'lastDay: ',data.lastDay
     print  'maxPrice: ',data.maxPrice
     print 'la ciudad es: ', data.city
-    contactWithHotelProvider(data.firstDay,data.lastDay, data.city)
-    responseObj = AcommodationResponseMessage(1,"Ritz", 40, "Liverpool Street 15, SS0 0B7, City of London")
+    responseObj = contactWithHotelProvider(data.firstDay,data.lastDay, data.city, data.maxPrice)
     #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
-    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
+    if responseObj.price != -1:
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
+    else:
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.FAILURE,Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
     return dataContent
 
 
-def contactWithHotelProvider(check_in, check_out, city):
+def contactWithHotelProvider(check_in, check_out, city, maxPrice):
     print 'lets connect with the hotels API'
     lat = askForCityLat(city)
     long = askForCityLong(city)
-    print ' We are about to ask the API. The lat is', lat
     urlRequest = 'http://api.sandbox.amadeus.com/v1.2/hotels/search-circle?apikey=9eaVp6HVlEMrIFFyY5gbUFC1FAD6c1iT&latitude={reqLat}&longitude={reqLon}&radius=20&check_in={reqArr}&check_out={reqDep}&currency=EUR&number_of_results=1'.format(reqLat=lat, reqLon=long, reqArr=check_in, reqDep=check_out)
     print 'La solicitud se hace a ', urlRequest
     answer = requests.request('GET', urlRequest)
-    print answer.content
+    content = answer.json()
+    hotelPrice = content['results'][0]['total_price']['amount']
+    hotelName = content['results'][0]['property_name']
+    calle = content['results'][0]['address']['line1']
+    cp = content['results'][0]['address']['postal_code']
+    ciudad = content['results'][0]['address']['city']
+    direccion = ''.join([calle,', ',ciudad,', ',cp])
+    if hotelPrice <= maxPrice:
+        finalMessage = AcommodationResponseMessage(1, hotelName, hotelPrice, direccion)
+    else:
+        finalMessage = AcommodationResponseMessage(1,'error',-1,'error')
+    return finalMessage
+
 
 
 if __name__ == '__main__':

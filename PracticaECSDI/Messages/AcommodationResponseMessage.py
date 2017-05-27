@@ -4,7 +4,6 @@ from PracticaECSDI.Constants import Constants
 
 class AcommodationResponseMessage:
     def __init__(self,id,hotelName, hotelPrice, hotelStreet):
-        #llista de dies amb les corresponents activitats
         self.name = hotelName
         self.uuid = id
         self.price = hotelPrice

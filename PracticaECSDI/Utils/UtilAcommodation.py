@@ -30,11 +30,6 @@ def askHotelData():
     return
 
 def processAcommodationResult(response):
-    #print "Register response was {}".format(dat)
-    #rPerformative = get_message_performative(Graph().parse(data=dat))
-    #if rPerformative == FIPAACLPerformatives.AGREE:
-    #TO-ASK: cal agafar la ontologia de la resposta?
-
     graph = Graph().parse(data=response.text, format='xml')
     if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
         print "Success request"
@@ -44,5 +39,5 @@ def processAcommodationResult(response):
         print "Direccion: ",acommResult.street
         print "Precio: ",acommResult.price
 
-    #else:
-        #print "Activities error"
+    elif get_message_performative(graph) == FIPAACLPerformatives.FAILURE:
+        print "No se ha encontrado ningun hotel al precio y fechas indicados"
