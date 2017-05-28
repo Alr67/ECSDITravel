@@ -2,6 +2,7 @@ from PracticaECSDI.Utils.UtilAcommodation import askHotelData
 from PracticaECSDI.Utils.UtilActivities import askActivitiesData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
 from PracticaECSDI.Utils.UtilGeneral import askForString
+from PracticaECSDI.Utils.UtilPayment import askPaymentData
 
 
 def configUrls():
@@ -41,7 +42,7 @@ def askPayment():
             print ("Opcion incorrecta")
         else:
             if option == 1:
-                a = 1  # something
+                askPaymentData()
                 return
             if option == 2:
                 a = 1  # something
