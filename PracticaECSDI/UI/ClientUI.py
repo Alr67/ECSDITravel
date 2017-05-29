@@ -67,31 +67,25 @@ def main1():
     while option != 0:
         print "\nEscoge una opcion: "
         print "0. Salir"
-        print "1. Buscar vuelo"
-        print "2. Buscar alojamiento"
-        print "3. Buscar completo vuelo + alojamiento"
-        print "4. Buscar actividades (TODO)"
-        print "5. Pagar viaje"
-        print "6. Buscar completo (TODO)\n"
+        print "1. Buscar completo vuelo + alojamiento"
+        print "2. Buscar actividades (TODO)"
+        print "3. Pagar viaje"
+        print "4. Buscar completo (TODO)\n"
 
         option = raw_input("")
         try:
             option = int(option)
-            if option not in [1, 2, 3, 4, 5, 6]:
+            if option not in [1, 2, 3, 4]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
-                    askFlightsData()
-                if option == 2:
-                    askHotelData()
-                if option == 3:
                     askPlanData()
-                if option == 4:
+                if option == 2:
                     askActivitiesData()
-                if option == 5:
+                if option == 3:
                     askPayment()
-                if option == 6:
-                    a = 1 #something
+                if option == 4:
+                    return
         except ValueError:
             print "Este valor debe ser numerico\n"
 
