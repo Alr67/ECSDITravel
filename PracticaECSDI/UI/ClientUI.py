@@ -1,5 +1,6 @@
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData
 from PracticaECSDI.Utils.UtilActivities import askActivitiesData
+from PracticaECSDI.Utils.UtilDecisiones import askPlanData
 from PracticaECSDI.Utils.UtilFlights import askFlightsData
 from PracticaECSDI.Utils.UtilGeneral import askForString
 from PracticaECSDI.Utils.UtilPayment import askPaymentData
@@ -68,7 +69,7 @@ def main1():
         print "0. Salir"
         print "1. Buscar vuelo"
         print "2. Buscar alojamiento"
-        print "3. Buscar completo vuelo + alojamiento (TODO)"
+        print "3. Buscar completo vuelo + alojamiento"
         print "4. Buscar actividades (TODO)"
         print "5. Pagar viaje"
         print "6. Buscar completo (TODO)\n"
@@ -84,7 +85,7 @@ def main1():
                 if option == 2:
                     askHotelData()
                 if option == 3:
-                    a =  1 #something
+                    askPlanData()
                 if option == 4:
                     askActivitiesData()
                 if option == 5:

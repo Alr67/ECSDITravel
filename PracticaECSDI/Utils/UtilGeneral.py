@@ -65,7 +65,7 @@ def askForCity(response):
             elif city == 'Paris':
                 return 'CDG'
             elif city == 'Londres':
-                return 'GTW'
+                return 'LGW'
             elif city == 'Madrid':
                 return 'MAD'
             elif city == 'Estocolmo':
@@ -86,7 +86,7 @@ def askForCityLat(city):
                 return 41.3887900
             elif city == 'CDG':
                 return 48.8534100
-            elif city == 'GTW':
+            elif city == 'LGW':
                 return 51.5085300
             elif city == 'MAD':
                 return 40.4165000
@@ -108,7 +108,7 @@ def askForCityLong(city):
                 return 2.1589900
             elif city == 'CDG':
                 return 2.3488000
-            elif city == 'GTW':
+            elif city == 'LGW':
                 return -0.1257400
             elif city == 'MAD':
                 return -3.7025600

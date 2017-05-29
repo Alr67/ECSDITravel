@@ -9,17 +9,19 @@ from PracticaECSDI.Messages.FlightResponseMessage import FlightResponseMessage
 from PracticaECSDI.AgentUtil.ACLMessages import build_message,get_message_performative
 from PracticaECSDI.AgentUtil import ACLMessages
 
-def askFlightsData():
-    print 'Tell me about your flights'
+def askFlightsData(maxPrice, initDate, finalDate, departureAirport, arrivalAirport):
+    """print 'Tell me about your flights'
     maxPrice = askForInt("Max price: ")
     print 'Max price to request: ', maxPrice
-    flights_url = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
-    print 'url: ', flights_url
+    
     initDate = askForDate("Enter the first day of the travel")
     finalDate = askForDate("Enter the last day of the travel")
     departureAirport = askForCity("Enter the departure airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
     print "Ciudad introducida ", departureAirport
-    arrivalAirport = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
+    arrivalAirport = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")"""
+
+    flights_url = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
+    print 'url: ', flights_url
 
     messageDataGo = FlightRequestMessage(1, maxPrice, initDate, finalDate, departureAirport, arrivalAirport)
     gra = messageDataGo.to_graph()
@@ -28,12 +30,11 @@ def askFlightsData():
 
     resp = requests.post(flights_url, data=dataContent)
 
-    print 'he tornat a la consola clientUI, anem a processar la resposta'
-    #processFlightsResult(resp1, resp2)
-    processFlightsResult(resp)
-    print "He acabat de processar la resposta"
+    #print 'he tornat a la consola clientUI, anem a processar la resposta'
+    #processFlightsResult(resp)
+    #print "He acabat de processar la resposta"
 
-    return
+    return resp
 
 def processFlightsResult(resp):
     flightgo = resp.text

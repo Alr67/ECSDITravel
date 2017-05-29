@@ -102,7 +102,7 @@ def getFlights(graph):
         return dataContent
 
     else:
-        responseObj = FlightResponseMessage(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        responseObj = FlightResponseMessage(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.DISCONFIRM,
                                     Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
         return dataContent
