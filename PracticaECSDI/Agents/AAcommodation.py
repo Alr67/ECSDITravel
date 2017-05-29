@@ -37,7 +37,8 @@ def getAcommodation(graph):
     print 'la ciudad es: ', data.city
     responseObj = contactWithHotelProvider(data.firstDay,data.lastDay, data.city, data.maxPrice)
     #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
-    if responseObj.price != -1:
+    print 'El precio es ', responseObj.price
+    if responseObj.price > 0:
         dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
     else:
         dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.FAILURE,Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
@@ -58,7 +59,9 @@ def contactWithHotelProvider(check_in, check_out, city, maxPrice):
     cp = content['results'][0]['address']['postal_code']
     ciudad = content['results'][0]['address']['city']
     direccion = ''.join([calle,', ',ciudad,', ',cp])
-    if hotelPrice <= maxPrice:
+    print 'El precio del hotel es ',float(hotelPrice)
+    print 'El max es ', maxPrice
+    if float(hotelPrice) <= maxPrice:
         finalMessage = AcommodationResponseMessage(1, hotelName, hotelPrice, direccion)
     else:
         finalMessage = AcommodationResponseMessage(1,'error',-1,'error')

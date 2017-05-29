@@ -19,6 +19,7 @@ def askForInt(message):
             pass
             print("Not an integer value...")
 
+
 def askForDate(message):
     print message
     day = 1
