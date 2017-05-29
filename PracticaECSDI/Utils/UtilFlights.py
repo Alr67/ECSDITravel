@@ -21,7 +21,6 @@ def askFlightsData():
     print "Ciudad introducida ", departureAirport
     arrivalAirport = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
 
-    #Vuelo ida
     messageDataGo = FlightRequestMessage(1, maxPrice, initDate, finalDate, departureAirport, arrivalAirport)
     gra = messageDataGo.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_FLIGHT_REQUEST).serialize(
@@ -29,32 +28,12 @@ def askFlightsData():
 
     resp = requests.post(flights_url, data=dataContent)
 
-    #Vuelo vuelta
-    """priceRestante = getPriceFlight(resp1)
-    messageDataReturn = FlightRequestMessage(1, priceRestante, initDate, finDate, arrivalAirport, departureAirport)
-    gra = messageDataReturn.to_graph()
-    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_FLIGHT_REQUEST).serialize(
-        format='xml')
-
-    resp2 = requests.post(flights_url, data=dataContent)"""
-
-
     print 'he tornat a la consola clientUI, anem a processar la resposta'
     #processFlightsResult(resp1, resp2)
     processFlightsResult(resp)
     print "He acabat de processar la resposta"
 
     return
-
-"""def getPriceFlight(resp1):
-    flightgo = resp1.text
-    # print "Register response was {}".format(dat)
-    rPerformative1 = get_message_performative(Graph().parse(data=flightgo))
-    if rPerformative1 == FIPAACLPerformatives.AGREE:
-        graph = Graph().parse(data=flightgo, format='xml')
-        fliResult = FlightResponseMessage.from_graph(graph)
-        return fliResult.price
-    return"""
 
 def processFlightsResult(resp):
     flightgo = resp.text
