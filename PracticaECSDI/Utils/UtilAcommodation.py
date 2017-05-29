@@ -33,13 +33,10 @@ def askHotelData(maxPrice, initDate, finDate, travelCity):
 
 def processAcommodationResult(response):
     graph = Graph().parse(data=response.text, format='xml')
-    if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
-        print "Success request"
-        acommResult = AcommodationResponseMessage.from_graph(graph)
-        print "El hotel encontrado es: "
-        print "Nombre: ",acommResult.name
-        print "Direccion: ",acommResult.street
-        print "Precio: ",acommResult.price
-
-    elif get_message_performative(graph) == FIPAACLPerformatives.FAILURE:
-        print "No se ha encontrado ningun hotel al precio y fechas indicados"
+    acommResult = AcommodationResponseMessage.from_graph(graph)
+    print "---------HOTEL---------"
+    print "El hotel encontrado es: "
+    print "Nombre: ",acommResult.name
+    print "Direccion: ",acommResult.street
+    print "Precio: EUR",acommResult.price
+    print ""

@@ -38,24 +38,22 @@ def askFlightsData(maxPrice, initDate, finalDate, departureAirport, arrivalAirpo
 
 def processFlightsResult(resp):
     flightgo = resp.text
-    #print "Register response was {}".format(dat)
-    rPerformative1 = get_message_performative(Graph().parse(data=flightgo))
-    if rPerformative1 == FIPAACLPerformatives.AGREE:
-    #TO-ASK: cal agafar la ontologia de la resposta?
-        print "Success request"
-        graph = Graph().parse(data=flightgo, format='xml')
-        fliResult = FlightResponseMessage.from_graph(graph)
+    graph = Graph().parse(data=flightgo, format='xml')
+    fliResult = FlightResponseMessage.from_graph(graph)
 
-        print "flights: ", fliResult.uuid
-        print "price: ", fliResult.price
-        print "ID Flight 1: ", fliResult.idflightgo
-        print "company 1: ", fliResult.companygo
-        print "departure hour 1: ", fliResult.departurehourgo
-        print "arrival hour 1: ", fliResult.arrivalhourgo
-        print "ID Flight 2: ", fliResult.idflightback
-        print "company 2: ", fliResult.companyback
-        print "departure hour 2: ", fliResult.departurehourback
-        print "arrival hour 2: ", fliResult.arrivalhourback
+    print "---------VUELOS----------"
+    print "Informacion sobre los vuelos encontrados:"
+    print ' '
+    print "Precio vuelos: ", fliResult.price
+    print ' '
+    print "ID Vuelo ida: ", fliResult.idflightgo
+    print "Companyia vuelo ida: ", fliResult.companygo
+    print "Hora de salida vuelo ida: ", fliResult.departurehourgo
+    print "Hora de llegada vuelo ida: ", fliResult.arrivalhourgo
+    print ' '
+    print "ID Vuelo vuelta: ", fliResult.idflightback
+    print "Companyia vuelo vuelta: ", fliResult.companyback
+    print "Hora de salida vuelo vuelta: ", fliResult.departurehourback
+    print "Hora de llegada vuelo vuelta: ", fliResult.arrivalhourback
+    print ""
 
-    else:
-        print "There are no flights with those features"

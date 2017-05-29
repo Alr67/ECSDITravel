@@ -27,10 +27,11 @@ def askPlanData():
         processFlightsResult(resultsFlights)
         processAcommodationResult(acommodationResults)
     else:
+        print 'El viaje no se ha podido planear. El motivo ha sido: '
         if get_message_performative(graphFlights) == FIPAACLPerformatives.DISCONFIRM:
-            print 'Albaaaaaa'
+            print 'No se han encontrado vuelos para las fechas y precio seleccionados'
         if get_message_performative(graphAcommodation) == FIPAACLPerformatives.FAILURE:
-            print 'Rafaaaaaa'
+            print 'No se ha encontrado ningun hotel para las fechas y precio seleccionado'
     return
 
 def obtainTravelInfo():
