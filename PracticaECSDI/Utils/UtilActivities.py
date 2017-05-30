@@ -7,11 +7,12 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
 from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage
 from PracticaECSDI.AgentUtil.ACLMessages import build_message,get_message_performative
+from PracticaECSDI.Utils.UtilGeneral import askForCity, askForTravelType
 from PracticaECSDI.AgentUtil import ACLMessages
 
-def directToAct():
+def directToAct(location,type):
     activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
-    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200)
+    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200,location,type)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
@@ -21,31 +22,23 @@ def directToAct():
     return
 
 def askActivitiesData():
-    directToAct()
-    print 'Tell me about your activities'
-    maxPrice = askForInt("Max price: ")
-    print 'Max price to request: ', maxPrice
-    activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
-    print 'url: ', activities_url
-    initDate = askForDate("Enter the first day of the travel")
-    finDate = askForDate("Enter the last day of the travel")
-    messageData = ActivitiesRequestMessage(1, initDate,finDate,maxPrice)
-    gra = messageData.to_graph()
-    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
-
-    resp = requests.post(activities_url, data=dataContent)
-    print 'Ja tinc les activitats, processant la resposta...'
-    processActivitiesResult(resp)
-    print "Gracies per confiar en nosaltres, disfruti del plan :)"
+    print 'Im in askActivitiesData'
+    arrivalCity = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
+    type = askForTravelType()
+    directToAct(arrivalCity,type)
 
     return
 
 def processActivitiesResult(response):
     dat = response.text
-    print "Register response was {}".format(dat)
+    print 'vaig a processar3'
+   # print "Register response was {}".format(dat)
+    print 'vaig a processar'
     rPerformative = get_message_performative(Graph().parse(data=dat))
+    print 'vaig a processar2'
     if rPerformative == FIPAACLPerformatives.AGREE:
     #TO-ASK: cal agafar la ontologia de la resposta?
+        print 'Agree'
         graph = Graph().parse(data=dat, format='xml')
         actResult = ActivitiesResponseMessage.from_graph(graph)
 

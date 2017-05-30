@@ -19,7 +19,6 @@ def askForInt(message):
             pass
             print("Not an integer value...")
 
-
 def askForDate(message):
     print message
     day = 1
@@ -78,6 +77,26 @@ def askForCity(response):
         except:
             pass
             print("Not a valid city...")
+
+def askForTravelType():
+    while True:
+        try:
+        #https://developers.google.com/places/supported_types
+            city = raw_input("Enter the type of travel you want (Comilona,Relax,Cultural,Naturista)")
+            city = city.strip()
+            if city == 'Comilona':
+                return 'restaurant,bar'
+            elif city == 'Relax':
+                return 'spa'
+            elif city == 'Cultural':
+                return 'museum'
+            elif city == 'Naturista':
+                return 'park'
+            else:
+                raise ValueError('Not a valid travel type...')
+        except:
+            pass
+            print("Not a valid travel type...")
 
 def askForCityLat(city):
     while True:

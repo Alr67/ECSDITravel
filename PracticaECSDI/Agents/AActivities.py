@@ -36,36 +36,52 @@ def initGooglePlaces():
         API_KEY = d["API_KEY_GOOGLE"]
         print "apikey:"+ API_KEY
         global google_places
-        google_places = GooglePlaces(API_KEY)
+        google_places = GooglePlaces(API_KEY)#, types, API_KEY
     return
 
-def processGooglePlacesResult(arrayplaces):
+def processGooglePlacesResult(arrayplaces,days,firstDay):
+    num = 0
+    planList = []
+    for i in range(days):
+        print ' montant dia ',i
+        dayPlan = DayPlan(i, firstDay + datetime.timedelta(days=i))
+        dayPlan.activity1 = arrayplaces[num].name
+        num = num +1
+        dayPlan.activity2 = arrayplaces[num].name
+        num = num +1
+        dayPlan.activity3 = arrayplaces[num].name
+        num = num +1
+        planList.append(dayPlan)
+    return  planList
+
+def exampleProcessArrau(arrayplaces):
     for place in arrayplaces:
+        print 'Im processing array results n',num
+        num = num+1
         # Returned places from a query are place summaries.
         pl = GooglePlacesAct(place)
         pl.printData()
-
+        print "letsget more detail"
             # The following method has to make a further API call.
         place.get_details()
         # Referencing any of the attributes below, prior to making a call to
         # get_details() will raise a googleplaces.GooglePlacesAttributeError.
-        print place.details # A dict matching the JSON response from Google.
+        print "details: ",place.details # A dict matching the JSON response from Google.
         #             print place.local_phone_number
-        print place.international_phone_number
-        print place.website
-        print place.url
-        break
+        print "phonenumber: ",place.international_phone_number
+        print "website: ",place.website
+        print "url: ",place.url
+
 
             # Getting place photos
         #getDetailPhotos(place.photos)
 
-def askGooglePlaces(location):
+def askGooglePlaces(location,type,days,firstDay):
     initGooglePlaces()
-    query_result = google_places.nearby_search(location='London, England', keyword='Fish and Chips',radius=20000, types=[types.TYPE_FOOD])
+    query_result = google_places.nearby_search(location=location,radius=20000,types=[type])
     if query_result.has_attributions:
         print query_result.html_attributions
-    processGooglePlacesResult(query_result.places)
-
+    return processGooglePlacesResult(query_result.places,days,firstDay)
 
 def getDetailPhotos(photosarray):
     for photo in photosarray:
@@ -80,14 +96,6 @@ def getDetailPhotos(photosarray):
                 # Raw image data
         photo.data
 
-def askGooglePlaces2(location):
-    data_file = get_file('../config.json')
-    print 'data',data_file
-    data = json.JSONDecoder.decode(data_file)
-    API_KEY = data["API_KEY_GOOGLE"]
-    print "apikey:"+ API_KEY
-    return
-
 def get_file(path):
     f = open(path, 'r')
     output = f.read()
@@ -95,28 +103,20 @@ def get_file(path):
     return output
 
 def getActivities(graph):
-    askGooglePlaces("1")
     print 'im in get activities from graph'
     data = ActivitiesRequestMessage.from_graph(graph)
-    print 'data obtained: ',data
     print  'initDate: ',data.firstDay
     print  'lastDay: ',data.lastDay
-    print  'maxPrice: ',data.maxPrice
     days = (data.lastDay-data.firstDay).days
     print 'days: ',days
-    planList = []
-    for i in range(days):
-        dayPlan = DayPlan(i,data.firstDay+ datetime.timedelta(days=i),"Pending","Pending","Pending")
-        planList.append(dayPlan)
+    print 'location: ',data.location
+    print 'type: ',data.type
+    planList = askGooglePlaces(data.location,data.type,days, data.firstDay)
     print 'plan length: ',len(planList)
     responseObj = ActivitiesResponseMessage(1,planList)
     #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
     return dataContent
-
-
-if __name__ == '__main__':
-    app.run(port=Constants.PORT_AActivities, debug=True)
 
 class GooglePlacesAct:
     def __init__(self,place):
@@ -125,10 +125,15 @@ class GooglePlacesAct:
         self.place_id = place.place_id
 
     def printData(self):
-        print self.name
-        print self.geo_location
-        print self.place_id
+        print "Activity: "
+        print "     Name: ", self.name
+        print "     Location: ",self.geo_location
+        print "     PlaceId: ",self.place_id
 
     def addDetail(self,details):
         return
+
+if __name__ == '__main__':
+    app.run(port=Constants.PORT_AActivities, debug=True)
+
 

@@ -43,7 +43,10 @@ class ActivitiesResponseMessage:
         day = graph.query(query)
         days = []
         for f,uuid,activity1,activity2,activity3,date in day:
-            new = DayPlan(uuid.toPython(),date.toPython(),activity1.toPython(),activity2.toPython(),activity3.toPython())
+            new = DayPlan(uuid.toPython(),date.toPython())
+            new.activity1 = activity1.toPython()
+            new.activity2 = activity2.toPython()
+            new.activity3 = activity3.toPython()
             days.append(new)
 
         query = """SELECT ?x ?uuid
@@ -61,5 +64,10 @@ class DayPlan:
         self.activity1 = activity1
         self.activity2 = activity2
         self.activity3 = activity3
+        self.date = date
+        self.uuid = id
+
+    def __init__(self,id,date):
+        #llista de dies amb les corresponents activitats
         self.date = date
         self.uuid = id
