@@ -117,4 +117,5 @@ if __name__ == "__main__":
     # auser = sys.argv[1]
     # apurchases = sys.argv[2]
     # cart = {}
-    main1()
+    #main1()
+    main()

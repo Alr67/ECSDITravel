@@ -17,7 +17,6 @@ def directToAct(location,type):
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
-    print 'Ja tinc les activitats, processant la resposta...'
     processActivitiesResult(resp)
     print "Gracies per confiar en nosaltres, disfruti del plan :)"
     return
@@ -36,30 +35,16 @@ def askForActivities(firstDay,lastDay,location,type):
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
-    print 'Ja tinc les activitats, processant la resposta...'
-    processActivitiesResult(resp)
-    print "Gracies per confiar en nosaltres, disfruti del plan :)"
+    return resp
 
 def processActivitiesResult(response):
-    dat = response.text
-    print 'vaig a processar3'
-   # print "Register response was {}".format(dat)
-    print 'vaig a processar'
-    rPerformative = get_message_performative(Graph().parse(data=dat))
-    print 'vaig a processar2'
-    if rPerformative == FIPAACLPerformatives.AGREE:
-    #TO-ASK: cal agafar la ontologia de la resposta?
-        print 'Agree'
-        graph = Graph().parse(data=dat, format='xml')
-        actResult = ActivitiesResponseMessage.from_graph(graph)
-
-        print "dies: ", len(actResult.day_plans)
-        for day in actResult.day_plans:
-            print "dia ",day.uuid
-            print "Data: ",day.date
-            print "Activitat1: ",day.activity1
-            print "Activitat2: ",day.activity2
-            print "Activitat3: ",day.activity3
-
-    else:
-        print "Activities error"
+    graph = Graph().parse(data=response.text, format='xml')
+    actResult = ActivitiesResponseMessage.from_graph(graph)
+    print "---------Activities---------"
+    for day in actResult.day_plans:
+        print "--Dia: ", day.uuid
+        print "     Data: ", day.date
+        print "     Actividad manana: ", day.activity1
+        print "     Actividad mediodia: ", day.activity2
+        print "     Actividad tarde: ", day.activity3
+        print ""
