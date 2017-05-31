@@ -84,19 +84,35 @@ def askForTravelType():
         #https://developers.google.com/places/supported_types
             city = raw_input("Enter the type of travel you want (Comilona,Relax,Cultural,Naturista)")
             city = city.strip()
-            if city == 'Comilona':
+            if city == 'Gastronomic':
                 return 'restaurant,bar'
             elif city == 'Relax':
                 return 'spa'
             elif city == 'Cultural':
                 return 'museum'
-            elif city == 'Naturista':
+            elif city == 'Natural':
                 return 'park'
             else:
                 raise ValueError('Not a valid travel type...')
         except:
             pass
             print("Not a valid travel type...")
+
+def CodeToCityLocation(code):
+    if code == 'BCN':
+        return 'Barcelona'
+    elif code == 'CDG':
+        return 'Paris'
+    elif code == 'LGW':
+        return 'London'
+    elif code == 'MAD':
+        return 'Madrid'
+    elif code == 'ARN':
+        return 'Estocolm'
+    elif code == 'MXP':
+        return 'Milan'
+    else:
+        raise ValueError('Not a valid city...')
 
 def askForCityLat(city):
     while True:

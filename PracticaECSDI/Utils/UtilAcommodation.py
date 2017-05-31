@@ -18,7 +18,7 @@ def askHotelData(maxPrice, initDate, finDate, travelCity):
     travelCity = askForCity("Enter the city where you will stay (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")"""
     messageData = AcommodationRequestMessage(1, initDate, finDate, maxPrice, travelCity)
     gra = messageData.to_graph()
-    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACOMMODATION_REQUEST).serialize(
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACCOMMODATION_REQUEST).serialize(
         format='xml')
 
 

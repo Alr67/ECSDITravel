@@ -16,19 +16,28 @@ service = None
 
 @app.route('/comm', methods=['GET', 'POST'])
 def comm():
-    print 'Im in Activities Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_ACTIVITIES_REQUEST:
-        print 'Its a activity request'
-        message = getActivities(graph)
-        print 'activities graph obtained, lets construct response message'
+        message = processActivitiesRequest(graph)
         return message
     else:
         print 'I dont understand'
-        return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
+        return ACLMessages.build_message(Graph(),
+            FIPAACLPerformatives.NOT_UNDERSTOOD,
+            Ontologies.UNKNOWN_ONTOLOGY)
 
-def initGooglePlaces():
+def processActivitiesRequest(graph):
+    print 'im in get activities from graph'
+    data = ActivitiesRequestMessage.from_graph(graph)
+    print  'initDate: ',data.firstDay
+    print  'lastDay: ',data.lastDay
+    print 'location: ',data.location
+    print 'type: ',data.type
+    planList = askGooglePlaces(data.location,data.type, data.firstDay,data.lastDay)
+    print 'plan length: ',len(planList)
+    return processActivitiesPlan(planList)
+def initGooglePlacesApiParams():
     with open('../config.json') as json_data:
         d = json.load(json_data)
         json_data.close()
@@ -38,23 +47,36 @@ def initGooglePlaces():
         global google_places
         google_places = GooglePlaces(API_KEY)#, types, API_KEY
     return
-
-def processGooglePlacesResult(arrayplaces,days,firstDay):
+def askGooglePlaces(location,type,firstDay,lastDay):
+    initGooglePlacesApiParams()
+    query_result = google_places.nearby_search(location=location,radius=20000,types=[type])
+    if query_result.has_attributions:
+        print query_result.html_attributions
+    return processGooglePlacesResult(query_result.places,firstDay,lastDay)
+def processGooglePlacesResult(arrayPlaces, firstDay, lastDay):
+    days = (lastDay-firstDay).days
+    print 'days: ',days
     num = 0
     planList = []
     for i in range(days):
         print ' montant dia ',i
         dayPlan = DayPlan(i, firstDay + datetime.timedelta(days=i))
-        dayPlan.activity1 = arrayplaces[num].name
+        dayPlan.activity1 = arrayPlaces[num].name
         num = num +1
-        dayPlan.activity2 = arrayplaces[num].name
+        dayPlan.activity2 = arrayPlaces[num].name
         num = num +1
-        dayPlan.activity3 = arrayplaces[num].name
+        dayPlan.activity3 = arrayPlaces[num].name
         num = num +1
         planList.append(dayPlan)
     return  planList
+def processActivitiesPlan(planList):
+    responseObj = ActivitiesResponseMessage(1, planList)
+    # TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
+    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
+                                Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
+    return dataContent
 
-def exampleProcessArrau(arrayplaces):
+def exampleProcessArray(arrayplaces):
     for place in arrayplaces:
         print 'Im processing array results n',num
         num = num+1
@@ -76,13 +98,6 @@ def exampleProcessArrau(arrayplaces):
             # Getting place photos
         #getDetailPhotos(place.photos)
 
-def askGooglePlaces(location,type,days,firstDay):
-    initGooglePlaces()
-    query_result = google_places.nearby_search(location=location,radius=20000,types=[type])
-    if query_result.has_attributions:
-        print query_result.html_attributions
-    return processGooglePlacesResult(query_result.places,days,firstDay)
-
 def getDetailPhotos(photosarray):
     for photo in photosarray:
         # 'maxheight' or 'maxwidth' is required
@@ -102,21 +117,6 @@ def get_file(path):
     f.close()
     return output
 
-def getActivities(graph):
-    print 'im in get activities from graph'
-    data = ActivitiesRequestMessage.from_graph(graph)
-    print  'initDate: ',data.firstDay
-    print  'lastDay: ',data.lastDay
-    days = (data.lastDay-data.firstDay).days
-    print 'days: ',days
-    print 'location: ',data.location
-    print 'type: ',data.type
-    planList = askGooglePlaces(data.location,data.type,days, data.firstDay)
-    print 'plan length: ',len(planList)
-    responseObj = ActivitiesResponseMessage(1,planList)
-    #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
-    dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')
-    return dataContent
 
 class GooglePlacesAct:
     def __init__(self,place):

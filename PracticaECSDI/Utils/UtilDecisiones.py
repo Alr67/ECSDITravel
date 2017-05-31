@@ -5,7 +5,8 @@ from PracticaECSDI.Constants import FIPAACLPerformatives
 from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData, processAcommodationResult
 from PracticaECSDI.Utils.UtilFlights import askFlightsData, processFlightsResult
-from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity
+from PracticaECSDI.Utils.UtilActivities import askForActivities
+from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity,askForTravelType
 
 maxPriceFlight = -1
 maxPriceHotel = -1
@@ -13,6 +14,7 @@ departureCity = ""
 arrivalCity = ""
 departureDates = ""
 returnDates = ""
+travelType=""
 
 
 def askPlanData():
@@ -20,9 +22,13 @@ def askPlanData():
 
     resultsFlights = askFlightsData(maxPriceFlight, departureDates, returnDates, departureCity, arrivalCity)
     acommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
+   # activitiesResults = askForActivities(departureDates,returnDates,arrivalCity,travelType)
 
     graphFlights = Graph().parse(data=resultsFlights.text, format='xml')
     graphAcommodation = Graph().parse(data=acommodationResults.text, format='xml')
+   # graphActivities = Graph().parse(data=activitiesResults.text,format='xml')
+    #print "Im back here"
+    #print graphActivities
     if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE and get_message_performative(graphAcommodation) == FIPAACLPerformatives.AGREE:
         processFlightsResult(resultsFlights)
         processAcommodationResult(acommodationResults)
@@ -54,3 +60,9 @@ def obtainTravelInfo():
     global arrivalCity
     arrivalCity = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")
 
+    global travelType
+    travelType = askForTravelType()
+
+def processPlanRequest(initDate,endDate,maxPriceHotel,maxPriceFlight,arrivalCity,departureCity,travelType):
+    #per la documentacio
+    return

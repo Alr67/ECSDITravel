@@ -55,9 +55,29 @@ def askPayment():
         print "Este valor debe ser numerico"
 
 def main():
-    #askFlightsData()
-    askActivitiesData()
-    #askHotelData()
+    username = askForString("Nombre del usuario que usara el sistema: ")
+
+    option = -1
+    while option != 0:
+        print "\nEscoge una opcion: "
+        print "0. Salir"
+        print "1. Iniciar planificacion viaje"
+        print "2. Pagar viaje\n"
+
+        option = raw_input("")
+        try:
+            option = int(option)
+            if option not in [0,1, 2]:
+                print ("Opcion incorrecta")
+            else:
+                if option == 1:
+                    askPlanData()
+                if option == 2:
+                    askPayment()
+                if option == 0:
+                    return
+        except ValueError:
+            print "Este valor debe ser numerico\n"
 
 
 def main1():

@@ -17,7 +17,7 @@ def comm():
     print 'I am in Acommodation Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
-    if ontology == Ontologies.SEND_ACOMMODATION_REQUEST:
+    if ontology == Ontologies.SEND_ACCOMMODATION_REQUEST:
         print 'Its an acommodation request'
         message = getAcommodation(graph)
         print 'activities graph obtained, lets construct response message'
@@ -39,9 +39,9 @@ def getAcommodation(graph):
     #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     print 'El precio es ', responseObj.price
     if responseObj.price > 0:
-        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACCOMMODATION_RESPONSE).serialize(format='xml')
     else:
-        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.FAILURE,Ontologies.SEND_ACOMMODATION_RESPONSE).serialize(format='xml')
+        dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.FAILURE, Ontologies.SEND_ACCOMMODATION_RESPONSE).serialize(format='xml')
     return dataContent
 
 

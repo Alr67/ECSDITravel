@@ -7,12 +7,13 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
 from PracticaECSDI.Messages.ActivitiesResponseMessage import ActivitiesResponseMessage
 from PracticaECSDI.AgentUtil.ACLMessages import build_message,get_message_performative
-from PracticaECSDI.Utils.UtilGeneral import askForCity, askForTravelType
+from PracticaECSDI.Utils.UtilGeneral import askForCity, askForTravelType,CodeToCityLocation
 from PracticaECSDI.AgentUtil import ACLMessages
 
 def directToAct(location,type):
+    city = CodeToCityLocation(location)
     activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
-    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200,location,type)
+    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200,city,type)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
@@ -28,6 +29,16 @@ def askActivitiesData():
     directToAct(arrivalCity,type)
 
     return
+def askForActivities(firstDay,lastDay,location,type):
+    city = CodeToCityLocation(location)
+    activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
+    messageData = ActivitiesRequestMessage(1,firstDay,lastDay,200,city,type)
+    gra = messageData.to_graph()
+    dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
+    resp = requests.post(activities_url, data=dataContent)
+    print 'Ja tinc les activitats, processant la resposta...'
+    processActivitiesResult(resp)
+    print "Gracies per confiar en nosaltres, disfruti del plan :)"
 
 def processActivitiesResult(response):
     dat = response.text
