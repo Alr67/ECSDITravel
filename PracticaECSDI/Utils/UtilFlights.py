@@ -2,6 +2,8 @@ from datetime import date
 from rdflib import Graph
 from flask import Flask, request, Response
 import requests
+
+from PracticaECSDI.UI import ClientUI
 from PracticaECSDI.Utils.UtilGeneral import askForInt, askForString, askForDate, askForCity
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.FlightRequestMessage import FlightRequestMessage
@@ -20,7 +22,7 @@ def askFlightsData(maxPrice, initDate, finalDate, departureAirport, arrivalAirpo
     print "Ciudad introducida ", departureAirport
     arrivalAirport = askForCity("Enter the arrival airport (Barcelona, Paris, Londres, Madrid, Estocolmo, Milan): ")"""
 
-    flights_url = Constants.LocalhostUrl + str(Constants.PORT_AFlights) + "/comm"
+    flights_url = ClientUI.AFlightURL + str(Constants.PORT_AFlights) + "/comm"
     print 'url: ', flights_url
 
     messageDataGo = FlightRequestMessage(1, maxPrice, initDate, finalDate, departureAirport, arrivalAirport)

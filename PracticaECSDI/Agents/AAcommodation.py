@@ -14,16 +14,12 @@ service = None
 
 @app.route('/comm', methods=['GET', 'POST'])
 def comm():
-    print 'I am in Acommodation Agent, comm function'
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_ACCOMMODATION_REQUEST:
-        print 'Its an acommodation request'
         message = getAcommodation(graph)
-        print 'activities graph obtained, lets construct response message'
         return message
     else:
-        print 'I dont understand'
         return ACLMessages.build_message(Graph(), FIPAACLPerformatives.NOT_UNDERSTOOD, Ontologies.UNKNOWN_ONTOLOGY)
 
 
