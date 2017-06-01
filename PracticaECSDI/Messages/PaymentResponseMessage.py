@@ -13,9 +13,9 @@ class PaymentResponseMessage:
         graph = Graph()
         namespace = Namespace(Constants.ONTOLOGY_NAME)
         prod = namespace.__getattr__('#ResponsePayment#'+str(self.name))
-        graph.add((prod, FOAF.name, Literal(self.name)))
-        graph.add((prod, FOAF.card, Literal(self.card)))
-        graph.add((prod, FOAF.amount, Literal(self.amount)))
+        graph.add((prod, FOAF.Name, Literal(self.name)))
+        graph.add((prod, FOAF.Card, Literal(self.card)))
+        graph.add((prod, FOAF.Amount, Literal(self.amount)))
         return graph
 
 
@@ -23,15 +23,11 @@ class PaymentResponseMessage:
     def from_graph(cls, graph):
         query = """SELECT ?x ?name ?card ?amount
                     WHERE {
-                        ?x ns1:name ?name.
-                        ?x ns1:card ?card.
-                        ?x ns1:amount ?amount.
+                        ?x ns1:Name ?name.
+                        ?x ns1:Card ?card.
+                        ?x ns1:Amount ?amount.
                     }
                 """
         resp = graph.query(query)
         for f, name, card, amount in resp:
             return PaymentResponseMessage(name.toPython(), card.toPython(), amount.toPython())
-
-
-def from_graph(graph):
-    return None
