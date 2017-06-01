@@ -2,7 +2,7 @@ from flask import Flask, request, Response
 from rdflib import Graph
 from PracticaECSDI.AgentUtil import ACLMessages
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
-from PracticaECSDI.Messages import PaymentRequestMessage
+from PracticaECSDI.Messages.PaymentRequestMessage import PaymentRequestMessage
 from PracticaECSDI.AgentUtil.ACLMessages import build_message
 from PracticaECSDI.Messages.PaymentResponseMessage import PaymentResponseMessage
 
@@ -27,7 +27,7 @@ def comm():
 def processPaymentRequest(graph):
     #do payment stuff
     resp = PaymentRequestMessage.from_graph(graph)
-    return processPaymentResponse(resp)
+    processPaymentResponse(resp)
 
 def processPaymentResponse(resp):
     response = PaymentResponseMessage(resp.name, resp.card, resp.amount)
