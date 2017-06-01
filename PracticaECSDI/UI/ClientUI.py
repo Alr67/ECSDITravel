@@ -87,15 +87,14 @@ def main1():
     while option != 0:
         print "\nEscoge una opcion: "
         print "0. Salir"
-        print "1. Buscar completo vuelo + alojamiento"
+        print "1. Buscar completo"
         print "2. Buscar actividades (TODO)"
         print "3. Pagar viaje"
-        print "4. Buscar completo (TODO)\n"
 
         option = raw_input("")
         try:
             option = int(option)
-            if option not in [1, 2, 3, 4]:
+            if option not in [1, 2, 3]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
@@ -104,8 +103,6 @@ def main1():
                     askActivitiesData()
                 if option == 3:
                     askPayment()
-                if option == 4:
-                    return
         except ValueError:
             print "Este valor debe ser numerico\n"
 
@@ -117,5 +114,5 @@ if __name__ == "__main__":
     # auser = sys.argv[1]
     # apurchases = sys.argv[2]
     # cart = {}
-    #main1()
-    main()
+    main1()
+    #main()

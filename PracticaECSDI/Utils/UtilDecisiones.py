@@ -21,24 +21,24 @@ def askPlanData():
     obtainTravelInfo()
 
     resultsFlights = askFlightsData(maxPriceFlight, departureDates, returnDates, departureCity, arrivalCity)
-    #acommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
+    acommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
     activitiesResults = askForActivities(departureDates,returnDates,arrivalCity,travelType)
 
     graphFlights = Graph().parse(data=resultsFlights.text, format='xml')
-    #graphAcommodation = Graph().parse(data=acommodationResults.text, format='xml')
+    graphAcommodation = Graph().parse(data=acommodationResults.text, format='xml')
     graphActivities = Graph().parse(data=activitiesResults.text,format='xml')
 
-    # if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE and get_message_performative(graphAcommodation) == FIPAACLPerformatives.AGREE and get_message_performative(graphActivities) == FIPAACLPerformatives.AGREE:
-    if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE  and get_message_performative(graphActivities)==FIPAACLPerformatives.AGREE:
+    if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE and get_message_performative(graphAcommodation) == FIPAACLPerformatives.AGREE and get_message_performative(graphActivities) == FIPAACLPerformatives.AGREE:
+    #if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE  and get_message_performative(graphActivities)==FIPAACLPerformatives.AGREE:
         processFlightsResult(resultsFlights)
-        #processAcommodationResult(acommodationResults)
+        processAcommodationResult(acommodationResults)
         processActivitiesResult(activitiesResults)
     else:
         print 'El viaje no se ha podido planear. El motivo ha sido: '
         if get_message_performative(graphFlights) == FIPAACLPerformatives.DISCONFIRM:
             print 'No se han encontrado vuelos para las fechas y precio seleccionados'
-      #  if get_message_performative(graphAcommodation) == FIPAACLPerformatives.FAILURE:
-       #     print 'No se ha encontrado ningun hotel para las fechas y precio seleccionado'
+        if get_message_performative(graphAcommodation) == FIPAACLPerformatives.FAILURE:
+            print 'No se ha encontrado ningun hotel para las fechas y precio seleccionado'
         if get_message_performative(graphActivities) == FIPAACLPerformatives.FAILURE:
             print 'No se ha encontrado ninguna actividad para la ciudad y tipo de viaje'
     return
