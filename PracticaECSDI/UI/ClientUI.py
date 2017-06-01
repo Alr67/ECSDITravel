@@ -1,9 +1,6 @@
-from PracticaECSDI.Utils.UtilAcommodation import askHotelData
 from PracticaECSDI.Utils.UtilActivities import askActivitiesData
 from PracticaECSDI.Utils.UtilDecisiones import askPlanData
-from PracticaECSDI.Utils.UtilFlights import askFlightsData
 from PracticaECSDI.Utils.UtilGeneral import askForString
-from PracticaECSDI.Utils.UtilPayment import askPaymentData
 
 
 def configUrls():
@@ -28,32 +25,6 @@ def configUrls():
         except ValueError:
             print "El valor ha de ser numerico"
 
-
-def askPayment():
-    print "\nEstas son las caracteristicas del viaje: dsdfsdfsdfsdfsdf"
-    print "Quieres confirmar y pagar este viaje?"
-    print "1. Si"
-    print "2. No"
-    print "3. Sinpa"
-
-    try:
-        option = raw_input("")
-        option = int(option)
-        if option not in [1, 2, 3, 4, 5]:
-            print ("Opcion incorrecta")
-        else:
-            if option == 1:
-                askPaymentData()
-                return
-            if option == 2:
-                a = 1  # something
-                return
-            if option == 3:
-                print "\nTu eres tonto?"
-                return
-    except ValueError:
-        print "Este valor debe ser numerico"
-
 def main():
     username = askForString("Nombre del usuario que usara el sistema: ")
 
@@ -62,18 +33,15 @@ def main():
         print "\nEscoge una opcion: "
         print "0. Salir"
         print "1. Iniciar planificacion viaje"
-        print "2. Pagar viaje\n"
 
         option = raw_input("")
         try:
             option = int(option)
-            if option not in [0,1, 2]:
+            if option not in [0, 1, 2]:
                 print ("Opcion incorrecta")
             else:
                 if option == 1:
                     askPlanData()
-                if option == 2:
-                    askPayment()
                 if option == 0:
                     return
         except ValueError:
@@ -89,7 +57,6 @@ def main1():
         print "0. Salir"
         print "1. Buscar completo"
         print "2. Buscar actividades (TODO)"
-        print "3. Pagar viaje"
 
         option = raw_input("")
         try:
@@ -101,8 +68,6 @@ def main1():
                     askPlanData()
                 if option == 2:
                     askActivitiesData()
-                if option == 3:
-                    askPayment()
         except ValueError:
             print "Este valor debe ser numerico\n"
 
@@ -114,5 +79,5 @@ if __name__ == "__main__":
     # auser = sys.argv[1]
     # apurchases = sys.argv[2]
     # cart = {}
-    main1()
-    #main()
+    #main1()
+    main()

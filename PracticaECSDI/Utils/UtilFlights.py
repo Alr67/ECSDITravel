@@ -56,4 +56,5 @@ def processFlightsResult(resp):
     print "Hora de salida vuelo vuelta: ", fliResult.departurehourback
     print "Hora de llegada vuelo vuelta: ", fliResult.arrivalhourback
     print ""
+    return fliResult
 

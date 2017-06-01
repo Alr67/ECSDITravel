@@ -1,12 +1,11 @@
 from rdflib import Graph
-
 from PracticaECSDI.AgentUtil.ACLMessages import get_message_performative
 from PracticaECSDI.Constants import FIPAACLPerformatives
-from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData, processAcommodationResult
 from PracticaECSDI.Utils.UtilFlights import askFlightsData, processFlightsResult
 from PracticaECSDI.Utils.UtilActivities import askForActivities,processActivitiesResult
 from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity,askForTravelType
+from PracticaECSDI.Utils.UtilPayment import askPaymentData, askPayment
 
 maxPriceFlight = -1
 maxPriceHotel = -1
@@ -21,18 +20,20 @@ def askPlanData():
     obtainTravelInfo()
 
     resultsFlights = askFlightsData(maxPriceFlight, departureDates, returnDates, departureCity, arrivalCity)
-    acommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
+    accommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
     activitiesResults = askForActivities(departureDates,returnDates,arrivalCity,travelType)
 
     graphFlights = Graph().parse(data=resultsFlights.text, format='xml')
-    graphAcommodation = Graph().parse(data=acommodationResults.text, format='xml')
-    graphActivities = Graph().parse(data=activitiesResults.text,format='xml')
+    graphAcommodation = Graph().parse(data=accommodationResults.text, format='xml')
+    graphActivities = Graph().parse(data=activitiesResults.text, format='xml')
 
     if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE and get_message_performative(graphAcommodation) == FIPAACLPerformatives.AGREE and get_message_performative(graphActivities) == FIPAACLPerformatives.AGREE:
     #if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE  and get_message_performative(graphActivities)==FIPAACLPerformatives.AGREE:
-        processFlightsResult(resultsFlights)
-        processAcommodationResult(acommodationResults)
+        vuelos = processFlightsResult(resultsFlights)
+        hotel = processAcommodationResult(accommodationResults)
         processActivitiesResult(activitiesResults)
+        askPayment(vuelos, hotel);
+
     else:
         print 'El viaje no se ha podido planear. El motivo ha sido: '
         if get_message_performative(graphFlights) == FIPAACLPerformatives.DISCONFIRM:

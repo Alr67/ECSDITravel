@@ -31,3 +31,7 @@ class PaymentResponseMessage:
         resp = graph.query(query)
         for f, name, card, amount in resp:
             return PaymentResponseMessage(name.toPython(), card.toPython(), amount.toPython())
+
+
+def from_graph(graph):
+    return None

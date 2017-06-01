@@ -31,3 +31,6 @@ class PaymentRequestMessage:
         for f, name, card, amount in resp:
             return PaymentRequestMessage(name.toPython(), card.toPython(), amount.toPython())
 
+
+def from_graph(graph):
+    return None

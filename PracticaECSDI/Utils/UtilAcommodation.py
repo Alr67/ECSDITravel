@@ -40,3 +40,4 @@ def processAcommodationResult(response):
     print "Direccion: ",acommResult.street
     print "Precio: EUR",acommResult.price
     print ""
+    return acommResult;
