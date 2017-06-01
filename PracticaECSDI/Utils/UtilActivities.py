@@ -2,6 +2,8 @@ from datetime import date
 from rdflib import Graph
 from flask import Flask, request, Response
 import requests
+
+from PracticaECSDI.Constants.SharedIP import disIP
 from PracticaECSDI.Utils.UtilGeneral import askForInt,askForString,askForDate
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Messages.ActivitiesRequestMessage import ActivitiesRequestMessage
@@ -30,7 +32,7 @@ def askActivitiesData():
     return
 def askForActivities(firstDay,lastDay,location,type):
     city = CodeToCityLocation(location)
-    activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
+    activities_url = disIP.activities_IP + str(Constants.PORT_AActivities) + "/comm"
     messageData = ActivitiesRequestMessage(1,firstDay,lastDay,200,city,type)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')

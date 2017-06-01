@@ -3,6 +3,7 @@ from rdflib import Graph
 
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
 from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
+from PracticaECSDI.Constants.SharedIP import disIP
 from PracticaECSDI.Messages.AcommodationRequestMessage import AcommodationRequestMessage
 from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
 from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity
@@ -22,7 +23,7 @@ def askHotelData(maxPrice, initDate, finDate, travelCity):
         format='xml')
 
 
-    acommURL = Constants.LocalhostUrl + str(Constants.PORT_AAcommodation) + "/comm"
+    acommURL = disIP.acommodation_IP + str(Constants.PORT_AAcommodation) + "/comm"
     print 'url: ', acommURL
     resp = requests.post(acommURL, data=dataContent)
     #print 'he tornat a la consola clientUI, anem a processar la resposta'

@@ -1,6 +1,7 @@
 from rdflib import Graph
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
 from PracticaECSDI.Constants import Constants, FIPAACLPerformatives, Ontologies
+from PracticaECSDI.Constants.SharedIP import disIP
 from PracticaECSDI.Messages import PaymentResponseMessage
 from PracticaECSDI.Messages.PaymentRequestMessage import PaymentRequestMessage
 import requests
@@ -34,7 +35,7 @@ def askPaymentData(vuelos, hotel):
     print '\nNumero de tarjeta:'
     cardNum = askForString("")
     print '\nProcesando el pago...'
-    payURL = Constants.LocalhostUrl + str(Constants.PORT_APayment) + "/comm"
+    payURL = disIP.payment_IP + str(Constants.PORT_APayment) + "/comm"
     print 'url: ', payURL
     amount = '546 Euros'
     messageData = PaymentRequestMessage(name, cardNum, amount)

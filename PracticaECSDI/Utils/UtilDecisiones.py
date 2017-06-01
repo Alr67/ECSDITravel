@@ -27,7 +27,6 @@ def askPlanData():
     graphActivities = Graph().parse(data=activitiesResults.text, format='xml')
 
     if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE and get_message_performative(graphAcommodation) == FIPAACLPerformatives.AGREE and get_message_performative(graphActivities) == FIPAACLPerformatives.AGREE:
-    #if get_message_performative(graphFlights) == FIPAACLPerformatives.AGREE  and get_message_performative(graphActivities)==FIPAACLPerformatives.AGREE:
         vuelos = processFlightsResult(resultsFlights)
         hotel = processAcommodationResult(accommodationResults)
         processActivitiesResult(activitiesResults)

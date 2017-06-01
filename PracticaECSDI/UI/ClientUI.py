@@ -20,10 +20,28 @@ def configUrls():
                     break
                 if configOption == 1:
                     AFlightsURL = "http://"
-                    AFlightsURL = AFlightsURL + raw_input("Dime la IP ")
+                    AFlightsURL = AFlightsURL + raw_input("Dime la IP de Agente de vuelos")
                     AFlightsURL = AFlightsURL + ":"
                     disIP.change_flights_IP(AFlightsURL)
                     print "Url/ip del agente de vuelos que usara el sistema: ", disIP.flights_IP
+
+                    AAcommURL = "http://"
+                    AAcommURL = AAcommURL + raw_input("Dime la IP de Agente de hoteles")
+                    AAcommURL = AAcommURL + ":"
+                    disIP.change_acommodation_IP(AAcommURL)
+                    print "Url/ip del agente de hoteles que usara el sistema: ", disIP.acommodation_IP
+
+                    AActivURL = "http://"
+                    AActivURL = AActivURL + raw_input("Dime la IP de Agente de actividades")
+                    AActivURL = AActivURL + ":"
+                    disIP.change_activities_IP(AActivURL)
+                    print "Url/ip del agente de actividades que usara el sistema: ", disIP.activities_IP
+
+                    APaymentURL = "http://"
+                    APaymentURL = APaymentURL + raw_input("Dime la IP de Agente de pago")
+                    APaymentURL = APaymentURL + ":"
+                    disIP.change_payment_IP(APaymentURL)
+                    print "Url/ip del agente de pago que usara el sistema: ", disIP.payment_IP
                     return
         except ValueError:
             print "El valor ha de ser numerico"
