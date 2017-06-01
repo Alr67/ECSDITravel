@@ -1,6 +1,6 @@
 from rdflib import Graph
 from PracticaECSDI.AgentUtil.ACLMessages import get_message_performative
-from PracticaECSDI.Constants import FIPAACLPerformatives
+from PracticaECSDI.Constants import FIPAACLPerformatives, Constants
 from PracticaECSDI.Utils.UtilAcommodation import askHotelData, processAcommodationResult
 from PracticaECSDI.Utils.UtilFlights import askFlightsData, processFlightsResult
 from PracticaECSDI.Utils.UtilActivities import askForActivities,processActivitiesResult
@@ -14,7 +14,6 @@ arrivalCity = ""
 departureDates = ""
 returnDates = ""
 travelType=""
-
 
 def askPlanData():
     obtainTravelInfo()

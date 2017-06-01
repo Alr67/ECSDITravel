@@ -1,16 +1,14 @@
-from PracticaECSDI.Utils.UtilActivities import askActivitiesData
+from PracticaECSDI.Constants.SharedIP import disIP
 from PracticaECSDI.Utils.UtilDecisiones import askPlanData
 from PracticaECSDI.Utils.UtilGeneral import askForString
 
-AFlightURL = ""
 
-#Constants.LocalhostUrl
 def configUrls():
     configOption = -1
     while configOption != 0:
         print "Hola! Quieres ejecutarlo todo de manera local o distribuir los agentes?"
-        print "0. No"
-        print "1. Si"
+        print "0. Local"
+        print "1. Distribuida"
         configOption = raw_input("")
         try:
             configOption = int(configOption)
@@ -21,16 +19,17 @@ def configUrls():
                     print 'Todo local'
                     break
                 if configOption == 1:
-                    global AFlightURL
-                    AFlightURL = askForString("Url/ip del agente de vuelos: ")
-                    print "Url/ip del agente de vuelos que usara el sistema: " + AFlightURL
+                    AFlightsURL = "http://"
+                    AFlightsURL = AFlightsURL + raw_input("Dime la IP ")
+                    AFlightsURL = AFlightsURL + ":"
+                    disIP.change_flights_IP(AFlightsURL)
+                    print "Url/ip del agente de vuelos que usara el sistema: ", disIP.flights_IP
                     return
         except ValueError:
             print "El valor ha de ser numerico"
 
 def main():
     username = askForString("Nombre del usuario que usara el sistema: ")
-
     configUrls()
 
     option = -1
