@@ -25,9 +25,10 @@ class PaymentResponseMessage:
                     WHERE {
                         ?x ns1:Name ?name.
                         ?x ns1:Card ?card.
-                        ?x ns1:Amount ?amount.
+                        ?x ns1:Amount ?amount
                     }
                 """
         resp = graph.query(query)
         for f, name, card, amount in resp:
-            return PaymentResponseMessage(name.toPython(), card.toPython(), amount.toPython())
+            a = PaymentResponseMessage(name.toPython(), card.toPython(), amount.toPython())
+            return a

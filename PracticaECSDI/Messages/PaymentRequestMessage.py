@@ -24,7 +24,7 @@ class PaymentRequestMessage:
             WHERE {
                 ?x ns1:Name ?name.
                 ?x ns1:Card ?card.
-                ?x ns1:Amount ?amount.
+                ?x ns1:Amount ?amount
             }
         """
         resp = graph.query(query)

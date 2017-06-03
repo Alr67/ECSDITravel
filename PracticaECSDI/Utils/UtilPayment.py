@@ -32,17 +32,20 @@ def askPaymentData(vuelos, hotel):
     print 'Introduce a continuacion la informacion para realizar el pago:'
     print '\nNombre del titular de la tarjeta:'
     name = askForString("")
+    print name;
+    name = 'Bubu'
     print '\nNumero de tarjeta:'
     cardNum = askForString("")
+    cardNum = '123'
     print '\nProcesando el pago...'
     payURL = disIP.payment_IP + str(Constants.PORT_APayment) + "/comm"
     print 'url: ', payURL
-    amount = '546 Euros'
-    messageData = PaymentRequestMessage(name, cardNum, amount)
+    amount = vuelos.price, ' + ', hotel.price
+    #messageData = PaymentRequestMessage(name, cardNum, amount)
+    messageData = PaymentRequestMessage('gulle', '123', '234')
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_PAYMENT_REQUEST)\
         .serialize(format='xml')
-
     resp = requests.post(payURL, data=dataContent)
     processPaymentResult(resp, vuelos, hotel)
     return

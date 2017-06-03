@@ -16,7 +16,8 @@ def comm():
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_PAYMENT_REQUEST:
-        print 'Hola chochosss'
+        print 'Creo que funciona hasta aqui............'
+
         message = processPaymentRequest(graph)
         return message
     else:
