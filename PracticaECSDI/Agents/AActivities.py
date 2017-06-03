@@ -14,6 +14,7 @@ google_places = ""
 app = Flask(__name__)
 service = None
 
+
 @app.route('/comm', methods=['GET', 'POST'])
 def comm():
     graph = Graph().parse(data=request.data, format='xml')
@@ -134,6 +135,6 @@ class GooglePlacesAct:
         return
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.161',port=Constants.PORT_AActivities, debug=True)
+    app.run(host='127.00.1', port=Constants.PORT_AActivities, debug=True)
 
 

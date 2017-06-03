@@ -16,6 +16,7 @@ def comm():
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_PAYMENT_REQUEST:
+        print 'Hola chochosss'
         message = processPaymentRequest(graph)
         return message
     else:
@@ -25,9 +26,8 @@ def comm():
             Ontologies.UNKNOWN_ONTOLOGY)
 
 def processPaymentRequest(graph):
-    #do payment stuff
     resp = PaymentRequestMessage.from_graph(graph)
-    processPaymentResponse(resp)
+    return processPaymentResponse(resp)
 
 def processPaymentResponse(resp):
     response = PaymentResponseMessage(resp.name, resp.card, resp.amount)
@@ -36,4 +36,4 @@ def processPaymentResponse(resp):
     return dataContent
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.161',port=Constants.PORT_APayment, debug=True)
+    app.run(host='127.0.0.1', port=Constants.PORT_APayment, debug=True)
