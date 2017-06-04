@@ -17,7 +17,7 @@ class PaymentRequestMessage:
         graph.add((pay, FOAF.UuidP, Literal(self.uuid)))
         graph.add((pay, FOAF.NameP, Literal(self.name)))
         graph.add((pay, FOAF.CardP, Literal(self.card)))
-        graph.add((pay, FOAF.AmmountP, Literal(self.amount)))
+        graph.add((pay, FOAF.AmountP, Literal(self.amount)))
         return graph
 
     @classmethod

@@ -32,7 +32,7 @@ def askPaymentData(vuelos, hotel):
     print 'Introduce a continuacion la informacion para realizar el pago:'
     print '\nNombre del titular de la tarjeta:'
     name = askForString("")
-    print name;
+    print name
     name = 'Bubu'
     print '\nNumero de tarjeta:'
     cardNum = askForString("")
