@@ -82,7 +82,7 @@ def askForTravelType():
     while True:
         try:
         #https://developers.google.com/places/supported_types
-            city = raw_input("Enter the type of travel you want (Comilona,Relax,Cultural,Naturista)")
+            city = raw_input("Enter the type of travel you want (Gastronomic,Relax,Cultural,Natura):")
             city = city.strip()
             if city == 'Gastronomic':
                 return 'restaurant,bar'

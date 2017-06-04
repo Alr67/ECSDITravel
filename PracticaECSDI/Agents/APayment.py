@@ -43,4 +43,4 @@ def processPaymentResponse(resp):
     return dataContent
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=Constants.PORT_APayment, debug=True)
+    app.run(host=Constants.IP_APayment, port=Constants.PORT_APayment, debug=True)

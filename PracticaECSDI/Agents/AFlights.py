@@ -108,4 +108,4 @@ def getFlights(graph):
         return dataContent
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=Constants.PORT_AFlights, debug=True)
+    app.run(host=Constants.IP_AFlights, port=Constants.PORT_AFlights, debug=True)
