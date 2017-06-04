@@ -27,13 +27,19 @@ def comm():
             Ontologies.UNKNOWN_ONTOLOGY)
 
 def processPaymentRequest(graph):
+    print 'processPaymentRequest'
     resp = PaymentRequestMessage.from_graph(graph)
-    return processPaymentResponse(resp)
+    print 'after from graph, obj obtained: ',resp
+    proc =  processPaymentResponse(resp)
+    return proc
 
 def processPaymentResponse(resp):
+    print 'processPaymentResponse with, ',resp
     response = PaymentResponseMessage(resp.name, resp.card, resp.amount)
+    print 'after create response'
     dataContent = build_message(response.to_graph(), FIPAACLPerformatives.AGREE,
                                 Ontologies.SEND_PAYMENT_RESPONSE).serialize(format='xml')
+    print 'after building Message'
     return dataContent
 
 if __name__ == '__main__':

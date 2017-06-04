@@ -1,10 +1,10 @@
+import requests
 from rdflib import Graph
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
 from PracticaECSDI.Constants import Constants, FIPAACLPerformatives, Ontologies
 from PracticaECSDI.Constants.SharedIP import disIP
-from PracticaECSDI.Messages import PaymentResponseMessage
+from PracticaECSDI.Messages.PaymentResponseMessage import PaymentResponseMessage
 from PracticaECSDI.Messages.PaymentRequestMessage import PaymentRequestMessage
-import requests
 from PracticaECSDI.Utils.UtilGeneral import askForString
 
 
@@ -42,7 +42,7 @@ def askPaymentData(vuelos, hotel):
     print 'url: ', payURL
     amount = vuelos.price, ' + ', hotel.price
     #messageData = PaymentRequestMessage(name, cardNum, amount)
-    messageData = PaymentRequestMessage('gulle', '123', '234')
+    messageData = PaymentRequestMessage(1,'gulle', '123', '234')
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_PAYMENT_REQUEST)\
         .serialize(format='xml')
@@ -54,6 +54,7 @@ def askPaymentData(vuelos, hotel):
 def processPaymentResult(response, flights, accomm):
     graph = Graph().parse(data=response.text, format='xml')
     if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
+        print '\nIm back'
         paymentResult = PaymentResponseMessage.from_graph(graph)
         print '\nPago realizado correctamente'
         print '\nProcesando factura...\n\n'

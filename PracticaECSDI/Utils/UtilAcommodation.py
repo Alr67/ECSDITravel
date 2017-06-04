@@ -6,7 +6,6 @@ from PracticaECSDI.Constants import Ontologies, FIPAACLPerformatives, Constants
 from PracticaECSDI.Constants.SharedIP import disIP
 from PracticaECSDI.Messages.AcommodationRequestMessage import AcommodationRequestMessage
 from PracticaECSDI.Messages.AcommodationResponseMessage import AcommodationResponseMessage
-from PracticaECSDI.Utils.UtilGeneral import askForInt, askForDate, askForCity
 
 
 def askHotelData(maxPrice, initDate, finDate, travelCity):

@@ -4,7 +4,8 @@ from PracticaECSDI.Constants import Constants
 
 
 class PaymentRequestMessage:
-    def __init__(self, name, card, amount):
+    def __init__(self,id, name, card, amount):
+        self.uuid = id
         self.name = name
         self.card = card
         self.amount = amount
@@ -12,21 +13,28 @@ class PaymentRequestMessage:
     def to_graph(self):
         graph = Graph()
         namespace = Namespace(Constants.ONTOLOGY_NAME)
-        pay = namespace.__getattr__('#RequestPayment#' + str(self.name))
-        graph.add((pay, FOAF.Name, Literal(self.name)))
-        graph.add((pay, FOAF.Card, Literal(self.card)))
-        graph.add((pay, FOAF.Ammount, Literal(self.amount)))
+        pay = namespace.__getattr__('#RequestPayment#' + str(self.uuid))
+        graph.add((pay, FOAF.UuidP, Literal(self.uuid)))
+        graph.add((pay, FOAF.NameP, Literal(self.name)))
+        graph.add((pay, FOAF.CardP, Literal(self.card)))
+        graph.add((pay, FOAF.AmmountP, Literal(self.amount)))
         return graph
 
     @classmethod
     def from_graph(cls, graph):
-        query = """SELECT ?x ?name ?card ?amount
+        query = """SELECT ?x ?uuid ?name ?card ?amount
             WHERE {
-                ?x ns1:Name ?name.
-                ?x ns1:Card ?card.
-                ?x ns1:Amount ?amount
+                ?x ns1:UuidP ?uuid.
+                ?x ns1:NameP ?name.
+                ?x ns1:CardP ?card.
+                ?x ns1:AmountP ?amount
             }
         """
         resp = graph.query(query)
-        for f, name, card, amount in resp:
-            return PaymentRequestMessage(name.toPython(), card.toPython(), amount.toPython())
+        print "resp: ",resp
+        print "respcount: ",len(resp)
+        for f, uuid, name, card, amount in resp:
+            print "name: ",name
+            print "card: ",card
+            return PaymentRequestMessage(uuid.toPython(),name.toPython(), card.toPython(), amount.toPython())
+        print "EndFor"
