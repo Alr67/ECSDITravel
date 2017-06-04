@@ -31,10 +31,5 @@ class PaymentRequestMessage:
             }
         """
         resp = graph.query(query)
-        print "resp: ",resp
-        print "respcount: ",len(resp)
         for f, uuid, name, card, amount in resp:
-            print "name: ",name
-            print "card: ",card
             return PaymentRequestMessage(uuid.toPython(),name.toPython(), card.toPython(), amount.toPython())
-        print "EndFor"

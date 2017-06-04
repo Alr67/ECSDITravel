@@ -90,7 +90,7 @@ def askForTravelType():
                 return 'spa'
             elif city == 'Cultural':
                 return 'museum'
-            elif city == 'Natural':
+            elif city == 'Natura':
                 return 'park'
             else:
                 raise ValueError('Not a valid travel type...')

@@ -16,8 +16,6 @@ def comm():
     graph = Graph().parse(data=request.data, format='xml')
     ontology = ACLMessages.get_message_ontology(graph)
     if ontology == Ontologies.SEND_PAYMENT_REQUEST:
-        print 'Creo que funciona hasta aqui............'
-
         message = processPaymentRequest(graph)
         return message
     else:
@@ -27,19 +25,13 @@ def comm():
             Ontologies.UNKNOWN_ONTOLOGY)
 
 def processPaymentRequest(graph):
-    print 'processPaymentRequest'
     resp = PaymentRequestMessage.from_graph(graph)
-    print 'after from graph, obj obtained: ',resp
-    proc =  processPaymentResponse(resp)
-    return proc
+    return processPaymentResponse(resp)
 
 def processPaymentResponse(resp):
-    print 'processPaymentResponse with, ',resp
     response = PaymentResponseMessage(resp.name, resp.card, resp.amount)
-    print 'after create response'
     dataContent = build_message(response.to_graph(), FIPAACLPerformatives.AGREE,
                                 Ontologies.SEND_PAYMENT_RESPONSE).serialize(format='xml')
-    print 'after building Message'
     return dataContent
 
 if __name__ == '__main__':
