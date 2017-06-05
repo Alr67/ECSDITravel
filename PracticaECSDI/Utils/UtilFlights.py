@@ -16,7 +16,6 @@ def askFlightsData(maxPrice, initDate, finalDate, departureAirport, arrivalAirpo
 
 
     flights_url = disIP.flights_IP + str(Constants.PORT_AFlights) + "/comm"
-    print 'url: ', flights_url
 
     messageDataGo = FlightRequestMessage(random.randint(1, 2000), maxPrice, initDate, finalDate, departureAirport, arrivalAirport)
     gra = messageDataGo.to_graph()

@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, request, Response
 from rdflib import Graph
 import datetime
@@ -61,7 +63,7 @@ def processGooglePlacesResult(arrayPlaces, firstDay, lastDay):
     planList = []
     for i in range(days):
         print ' montant dia ',i
-        dayPlan = DayPlan(i, firstDay + datetime.timedelta(days=i))
+        dayPlan = DayPlan(random.randint(1, 200000), firstDay + datetime.timedelta(days=i))
         dayPlan.activity1 = arrayPlaces[num].name
         num = num +1
         dayPlan.activity2 = arrayPlaces[num].name
@@ -71,7 +73,7 @@ def processGooglePlacesResult(arrayPlaces, firstDay, lastDay):
         planList.append(dayPlan)
     return  planList
 def processActivitiesPlan(planList):
-    responseObj = ActivitiesResponseMessage(1, planList)
+    responseObj = ActivitiesResponseMessage(random.randint(1, 2000), planList)
     # TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE,
                                 Ontologies.SEND_ACTIVITIES_RESPONSE).serialize(format='xml')

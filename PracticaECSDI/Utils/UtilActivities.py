@@ -1,3 +1,4 @@
+import random
 from datetime import date
 from rdflib import Graph
 from flask import Flask, request, Response
@@ -15,7 +16,7 @@ from PracticaECSDI.AgentUtil import ACLMessages
 def directToAct(location,type):
     city = CodeToCityLocation(location)
     activities_url = Constants.LocalhostUrl + str(Constants.PORT_AActivities) + "/comm"
-    messageData = ActivitiesRequestMessage(1, date(2017,7,1),date(2017,7,3),200,city,type)
+    messageData = ActivitiesRequestMessage(random.randint(1, 2000), date(2017,7,1),date(2017,7,3),200,city,type)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
@@ -33,7 +34,7 @@ def askActivitiesData():
 def askForActivities(firstDay,lastDay,location,type):
     city = CodeToCityLocation(location)
     activities_url = disIP.activities_IP + str(Constants.PORT_AActivities) + "/comm"
-    messageData = ActivitiesRequestMessage(1,firstDay,lastDay,200,city,type)
+    messageData = ActivitiesRequestMessage(random.randint(1, 2000),firstDay,lastDay,200,city,type)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_ACTIVITIES_REQUEST).serialize(format='xml')
     resp = requests.post(activities_url, data=dataContent)
@@ -44,8 +45,7 @@ def processActivitiesResult(response):
     actResult = ActivitiesResponseMessage.from_graph(graph)
     print "---------Activities---------"
     for day in actResult.day_plans:
-        print "--Dia: ", day.uuid
-        print "     Data: ", day.date
+        print "--Dia: ", day.date
         print "     Actividad manana: ", day.activity1
         print "     Actividad mediodia: ", day.activity2
         print "     Actividad tarde: ", day.activity3
