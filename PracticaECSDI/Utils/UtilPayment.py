@@ -1,3 +1,5 @@
+import random
+
 import requests
 from rdflib import Graph
 from PracticaECSDI.AgentUtil.ACLMessages import build_message, get_message_performative
@@ -22,10 +24,10 @@ def askPayment(vuelos, hotel):
                 askPaymentData(vuelos, hotel)
                 return
             if option == 2:
-                a = 1  # something
+                a = 1
                 return
     except ValueError:
-        print "Este valor debe ser numerico"
+        print "Error a la hora de gestionar el pago"
 
 
 def askPaymentData(vuelos, hotel):
@@ -36,10 +38,17 @@ def askPaymentData(vuelos, hotel):
     card_num = raw_input("")
     print '\nProcesando el pago...'
     payURL = disIP.payment_IP + str(Constants.PORT_APayment) + "/comm"
-    print 'url: ', payURL
-    amount = vuelos.price + ' + ' + hotel.price
-    messageData = PaymentRequestMessage(1, name, card_num, amount)
-    #messageData = PaymentRequestMessage(1, 'gulle', '123', '234')
+    hotelPrice = hotel.price
+    flightPrice = vuelos.price
+    try:
+        defFlightPrice = flightPrice.replace("EUR", '')
+        amountHotel =float(hotelPrice)
+        amountFlight = float(defFlightPrice)
+        amount = amountHotel + amountFlight
+    except ValueError:
+        print "No se ha podido hacer el parse a float"
+        return
+    messageData = PaymentRequestMessage(random.randint(1, 2000), name, card_num, amount)
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_PAYMENT_REQUEST)\
         .serialize(format='xml')
@@ -58,8 +67,10 @@ def processPaymentResult(response, flights, accomm):
         print flights.companygo, " ", flights.idflightgo, " + ", flights.companyback, " ", flights.idflightback,\
             " -> ", flights.price
         print accomm.name, " -> ", accomm.price
-        print "\nCantidad total: ", paymentResult.amount
-        print '\n\nGracias por usar nuestro servicio!\n\n'
+        print "\nCantidad total: ", paymentResult.amount, "EUR"
+        print '\n\nGracias por usar nuestro servicio!\n'
     elif get_message_performative(graph) == FIPAACLPerformatives.FAILURE:
         print "No se ha podido contactar con los proveedores para realizar el pago."
+
+
 

@@ -29,7 +29,6 @@ def getAcommodation(graph):
     print 'im getting your hotel preferences from graph'
     data = AcommodationRequestMessage.from_graph(graph)
     responseObj = contactWithHotelProvider(data.firstDay,data.lastDay, data.city, data.maxPrice)
-    #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     print 'El precio es ', responseObj.price
     if responseObj.price > 0:
         dataContent = build_message(responseObj.to_graph(), FIPAACLPerformatives.AGREE, Ontologies.SEND_ACCOMMODATION_RESPONSE).serialize(format='xml')
