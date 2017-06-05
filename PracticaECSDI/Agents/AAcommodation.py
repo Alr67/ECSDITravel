@@ -1,3 +1,5 @@
+import random
+
 import requests
 from flask import Flask, request, json
 from rdflib import Graph
@@ -26,11 +28,6 @@ def comm():
 def getAcommodation(graph):
     print 'im getting your hotel preferences from graph'
     data = AcommodationRequestMessage.from_graph(graph)
-    print 'data obtained: ',data
-    print  'initDate: ',data.firstDay
-    print  'lastDay: ',data.lastDay
-    print  'maxPrice: ',data.maxPrice
-    print 'la ciudad es: ', data.city
     responseObj = contactWithHotelProvider(data.firstDay,data.lastDay, data.city, data.maxPrice)
     #TO-ASK: Cal ontologia de resposta tambe??? O amb performativa ja n'hi ha prou?
     print 'El precio es ', responseObj.price
@@ -58,9 +55,9 @@ def contactWithHotelProvider(check_in, check_out, city, maxPrice):
     print 'El precio del hotel es ',float(hotelPrice)
     print 'El max es ', maxPrice
     if float(hotelPrice) <= maxPrice:
-        finalMessage = AcommodationResponseMessage(1, hotelName, hotelPrice, direccion)
+        finalMessage = AcommodationResponseMessage(random.randint(1, 2000), hotelName, hotelPrice, direccion)
     else:
-        finalMessage = AcommodationResponseMessage(1,'error',-1,'error')
+        finalMessage = AcommodationResponseMessage(random.randint(1, 2000), 'error', -1, 'error')
     return finalMessage
 
 

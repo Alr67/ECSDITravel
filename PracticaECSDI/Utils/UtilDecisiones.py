@@ -20,7 +20,7 @@ def askPlanData():
 
     resultsFlights = askFlightsData(maxPriceFlight, departureDates, returnDates, departureCity, arrivalCity)
     accommodationResults = askHotelData(maxPriceHotel, departureDates, returnDates, arrivalCity)
-    activitiesResults = askForActivities(departureDates,returnDates,arrivalCity,travelType)
+    activitiesResults = askForActivities(departureDates, returnDates, arrivalCity, travelType)
 
     graphFlights = Graph().parse(data=resultsFlights.text, format='xml')
     graphAcommodation = Graph().parse(data=accommodationResults.text, format='xml')
