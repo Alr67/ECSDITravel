@@ -31,18 +31,15 @@ def askPayment(vuelos, hotel):
 def askPaymentData(vuelos, hotel):
     print 'Introduce a continuacion la informacion para realizar el pago:'
     print '\nNombre del titular de la tarjeta:'
-    name = askForString("")
-    print name
-    name = 'Bubu'
+    name = raw_input("")
     print '\nNumero de tarjeta:'
-    cardNum = askForString("")
-    cardNum = '123'
+    card_num = raw_input("")
     print '\nProcesando el pago...'
     payURL = disIP.payment_IP + str(Constants.PORT_APayment) + "/comm"
     print 'url: ', payURL
-    amount = vuelos.price, ' + ', hotel.price
-    #messageData = PaymentRequestMessage(name, cardNum, amount)
-    messageData = PaymentRequestMessage(1,'gulle', '123', '234')
+    amount = vuelos.price + ' + ' + hotel.price
+    messageData = PaymentRequestMessage(1, name, card_num, amount)
+    #messageData = PaymentRequestMessage(1, 'gulle', '123', '234')
     gra = messageData.to_graph()
     dataContent = build_message(gra, FIPAACLPerformatives.REQUEST, Ontologies.SEND_PAYMENT_REQUEST)\
         .serialize(format='xml')
@@ -54,15 +51,15 @@ def askPaymentData(vuelos, hotel):
 def processPaymentResult(response, flights, accomm):
     graph = Graph().parse(data=response.text, format='xml')
     if get_message_performative(graph) == FIPAACLPerformatives.AGREE:
-        print '\nIm back'
         paymentResult = PaymentResponseMessage.from_graph(graph)
         print '\nPago realizado correctamente'
         print '\nProcesando factura...\n\n'
+        print '---------Factura---------'
         print flights.companygo, " ", flights.idflightgo, " + ", flights.companyback, " ", flights.idflightback,\
             " -> ", flights.price
         print accomm.name, " -> ", accomm.price
-        print "\n\nCantidad total: ", paymentResult.amount
-        print '\n\nGracias por usar nuestro servicio.'
+        print "\nCantidad total: ", paymentResult.amount
+        print '\n\nGracias por usar nuestro servicio!\n\n'
     elif get_message_performative(graph) == FIPAACLPerformatives.FAILURE:
         print "No se ha podido contactar con los proveedores para realizar el pago."
 
